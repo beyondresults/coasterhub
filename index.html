@@ -300,10 +300,14 @@
             </div>
 
             <div id="review-feedback-form" class="hidden">
-                <textarea id="review-feedback-textarea" rows="3" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#004225] focus:border-transparent transition" placeholder="Tell us more..."></textarea>
-                <button id="review-submit-feedback-button" class="mt-4 w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-blue-600 transition-colors">
-                    Submit Feedback
-                </button>
+                <form id="netlify-feedback-form" name="feedback" method="POST" data-netlify="true">
+                    <!-- This hidden field is required for Netlify's AJAX form submission -->
+                    <input type="hidden" name="form-name" value="feedback" />
+                    <textarea id="review-feedback-textarea" name="feedback_comment" rows="3" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#004225] focus:border-transparent transition" placeholder="Tell us more..."></textarea>
+                    <button id="review-submit-feedback-button" type="submit" class="mt-4 w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-blue-600 transition-colors">
+                        Submit Feedback
+                    </button>
+                </form>
             </div>
 
             <div id="review-feedback-thanks" class="hidden">
@@ -484,7 +488,7 @@
 
 
     <script>
-    // --- DATA ---
+        // --- DATA ---
 const pubDetails = {
   name: 'The Palace',
   address: '505-507 City Rd, South Melbourne VIC 3205',
@@ -659,9 +663,9 @@ const reviewCardSubtitle = document.getElementById('review-card-subtitle');
 const reviewInitialState = document.getElementById('review-initial-state');
 const reviewEmojiButtons = document.querySelectorAll('#review-emoji-ratings button');
 const reviewFeedbackForm = document.getElementById('review-feedback-form');
+const netlifyFeedbackForm = document.getElementById('netlify-feedback-form');
 const reviewFeedbackThanks = document.getElementById('review-feedback-thanks');
 const reviewFeedbackTextarea = document.getElementById('review-feedback-textarea');
-const reviewSubmitFeedbackButton = document.getElementById('review-submit-feedback-button');
 
 // Birthday Club
 const birthdayInitialView = document.getElementById('birthday-initial-view');
@@ -1129,16 +1133,39 @@ function handleReviewEmojiClick(event) {
     }
 }
 
-function submitPrivateFeedback() {
-    const feedbackText = reviewFeedbackTextarea.value;
-    console.log('Private feedback submitted:', {
-        comment: feedbackText
-    });
+function submitPrivateFeedback(event) {
+    event.preventDefault(); // Prevent default form submission
 
-    reviewFeedbackForm.classList.add('hidden');
-    reviewCardTitle.textContent = 'Thank You!';
-    reviewCardSubtitle.classList.add('hidden');
-    reviewFeedbackThanks.classList.remove('hidden');
+    const form = event.target;
+    const formData = new FormData(form);
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton.textContent;
+    
+    // Disable button and show loading state
+    submitButton.disabled = true;
+    submitButton.textContent = 'Submitting...';
+
+    fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
+    })
+    .then(() => {
+        // On success, show the thank you message
+        reviewFeedbackForm.classList.add('hidden');
+        reviewCardTitle.textContent = 'Thank You!';
+        reviewCardSubtitle.classList.add('hidden');
+        reviewFeedbackThanks.classList.remove('hidden');
+    })
+    .catch(error => {
+        console.error('Error submitting feedback to Netlify:', error);
+        alert('Sorry, there was an issue submitting your feedback. Please try again.');
+    })
+    .finally(() => {
+        // Reset button state
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
+    });
 }
 
 function handleBirthdaySignup(event) {
@@ -1258,7 +1285,7 @@ function init() {
   playAgainButton.addEventListener('click', restartGame);
   
   reviewEmojiButtons.forEach(button => button.addEventListener('click', handleReviewEmojiClick));
-  reviewSubmitFeedbackButton.addEventListener('click', submitPrivateFeedback);
+  netlifyFeedbackForm.addEventListener('submit', submitPrivateFeedback);
 
   // Birthday Club
   if (localStorage.getItem('birthdayClubSignedUp') === 'true') {
