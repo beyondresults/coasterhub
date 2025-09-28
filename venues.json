@@ -17,15 +17,15 @@
   "the-royal-oak": {
     "name": "The Royal Oak",
     "address": "442 Nicholson St, Fitzroy North VIC 3068",
-    "logo": "https://picsum.photos/seed/royaloak/100/100",
+    "logo": "https://cdn.prod.website-files.com/6105ed3c5ed41e814ab426cd/684e1b9c1f49e032a1a47d0c_NewTickMark.png",
     "instagramHandle": "@royaloakfitzroy",
     "instagramUrl": "https://www.instagram.com/royaloakfitzroy/",
     "facebookUrl": "https://www.facebook.com/royaloakhotelfitzroy/",
     "googleReviewLink": "https://www.google.com/search?q=The+Royal+Oak+Hotel+Fitzroy+North",
     "mailchimp": {
-      "url": "https://example.us1.list-manage.com/subscribe/post-json?u=YOUR_U_VALUE&id=YOUR_ID_VALUE",
-      "tagId": "87654321",
-      "botField": "b_YOUR_U_VALUE_YOUR_ID_VALUE"
+      "url": "https://example.us1.list-manage.com/subscribe/post-json?u=f7e66d56d4c9bf137a316d28c&id=00eaf2e0f0",
+      "tagId": "7327773",
+      "botField": "b_f7e66d56d4c9bf137a316d28c_313f667833"
     },
     "netlifyFormName": "feedback-royal-oak"
   }
