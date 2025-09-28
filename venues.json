@@ -1,0 +1,32 @@
+{
+  "the-palace-south-melb": {
+    "name": "The Palace",
+    "address": "505-507 City Rd, South Melbourne VIC 3205",
+    "logo": "https://cdn.prod.website-files.com/6105ed3c5ed41e814ab426cd/68d79bff223cfd256eb4c20f_images%20(5).png",
+    "instagramHandle": "@thepalacehotel",
+    "instagramUrl": "https://www.instagram.com/thepalacehotel/",
+    "facebookUrl": "https://www.facebook.com/thepalacehotelsouthmelbourne/",
+    "googleReviewLink": "https://www.google.com/search?q=The+Palace+Hotel+South+Melbourne",
+    "mailchimp": {
+      "url": "https://beyondresults.us14.list-manage.com/subscribe/post-json?u=f7e66d56d4c9bf137a316d28c&id=313f667833",
+      "tagId": "7327771",
+      "botField": "b_f7e66d56d4c9bf137a316d28c_313f667833"
+    },
+    "netlifyFormName": "feedback-the-palace"
+  },
+  "the-royal-oak": {
+    "name": "The Royal Oak",
+    "address": "442 Nicholson St, Fitzroy North VIC 3068",
+    "logo": "https://picsum.photos/seed/royaloak/100/100",
+    "instagramHandle": "@royaloakfitzroy",
+    "instagramUrl": "https://www.instagram.com/royaloakfitzroy/",
+    "facebookUrl": "https://www.facebook.com/royaloakhotelfitzroy/",
+    "googleReviewLink": "https://www.google.com/search?q=The+Royal+Oak+Hotel+Fitzroy+North",
+    "mailchimp": {
+      "url": "https://example.us1.list-manage.com/subscribe/post-json?u=YOUR_U_VALUE&id=YOUR_ID_VALUE",
+      "tagId": "87654321",
+      "botField": "b_YOUR_U_VALUE_YOUR_ID_VALUE"
+    },
+    "netlifyFormName": "feedback-royal-oak"
+  }
+}
