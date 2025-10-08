@@ -19,6 +19,7 @@ let isSpinning = false;
 let currentRotation = 0;
 let cooldownInterval;
 let wheelSegmentsData = []; // To store prize data with angles
+let birthdaySignupStorageKey = 'birthdayClubSignedUp'; // Defaults until venue is resolved
 
 // Stop the clock game state
 let stopClockInterval = null;
@@ -784,7 +785,8 @@ function handleBirthdaySignup(event) {
         document.head.removeChild(script);
         
         if (data.result === 'success') {
-            localStorage.setItem('birthdayClubSignedUp', 'true');
+            const storageKey = birthdaySignupStorageKey || 'birthdayClubSignedUp';
+            localStorage.setItem(storageKey, 'true');
             birthdayInitialView.classList.add('hidden');
             birthdayThanksView.classList.remove('hidden');
         } else {
@@ -913,6 +915,7 @@ async function init() {
     const params = new URLSearchParams(window.location.search);
     const requestedVenueId = params.get('venue');
     const venueId = requestedVenueId || DEFAULT_VENUE_ID;
+    birthdaySignupStorageKey = `birthdayClubSignedUp:${venueId}`;
 
     try {
         const [venuesResponse, globalResponse] = await Promise.all([
@@ -984,7 +987,12 @@ async function init() {
     reviewEmojiButtons.forEach(button => button.addEventListener('click', handleReviewEmojiClick));
     reviewFeedbackForm.addEventListener('submit', handleFeedbackSubmit);
 
-    if (localStorage.getItem('birthdayClubSignedUp') === 'true') {
+    if (localStorage.getItem('birthdayClubSignedUp') === 'true' && !localStorage.getItem(birthdaySignupStorageKey)) {
+        localStorage.setItem(birthdaySignupStorageKey, 'true');
+        localStorage.removeItem('birthdayClubSignedUp');
+    }
+
+    if (localStorage.getItem(birthdaySignupStorageKey) === 'true') {
         birthdayInitialView.classList.add('hidden');
         birthdayThanksView.classList.remove('hidden');
     } else {
