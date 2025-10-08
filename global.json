@@ -1,0 +1,57 @@
+{
+  "trivia": {
+    "theme": "AFL (Australian Football League)",
+    "questions": [
+      {
+        "question": "Which club holds the record for the most VFL/AFL Premierships?",
+        "options": ["Carlton", "Collingwood", "Essendon", "Richmond"],
+        "correctAnswer": "Carlton"
+      },
+      {
+        "question": "Who has kicked the most goals in VFL/AFL history?",
+        "options": ["Gary Ablett Sr.", "Jason Dunstall", "Gordon Coventry", "Tony Lockett"],
+        "correctAnswer": "Tony Lockett"
+      },
+      {
+        "question": "Which player has won the most Brownlow Medals?",
+        "options": ["Dick Reynolds", "Haydn Bunton Sr.", "Ian Stewart", "Nat Fyfe"],
+        "correctAnswer": "Nat Fyfe"
+      },
+      {
+        "question": "What year was the Australian Football League (AFL) officially formed, succeeding the VFL?",
+        "options": ["1985", "1990", "1995", "2000"],
+        "correctAnswer": "1990"
+      },
+      {
+        "question": "Which team won the inaugural AFLW premiership in 2017?",
+        "options": ["Brisbane Lions", "Adelaide Crows", "Western Bulldogs", "Collingwood"],
+        "correctAnswer": "Adelaide Crows"
+      },
+      {
+        "question": "What is the nickname of the Hawthorn Football Club?",
+        "options": ["The Eagles", "The Hawks", "The Power", "The Suns"],
+        "correctAnswer": "The Hawks"
+      },
+      {
+        "question": "The 'Grand Final' is traditionally played at which stadium?",
+        "options": ["Optus Stadium", "The Gabba", "Adelaide Oval", "MCG"],
+        "correctAnswer": "MCG"
+      },
+      {
+        "question": "Who is the current CEO of the AFL?",
+        "options": ["Gillon McLachlan", "Andrew Dillon", "Eddie McGuire", "Jeff Kennett"],
+        "correctAnswer": "Andrew Dillon"
+      },
+      {
+        "question": "Which two teams compete in the 'Showdown'?",
+        "options": ["West Coast & Fremantle", "Sydney & GWS", "Adelaide & Port Adelaide", "Collingwood & Carlton"],
+        "correctAnswer": "Adelaide & Port Adelaide"
+      },
+      {
+        "question": "A 'torpedo' or 'torp' is a type of what in AFL?",
+        "options": ["Tackle", "Kick", "Handball", "Mark"],
+        "correctAnswer": "Kick"
+      }
+    ]
+  }
+}
