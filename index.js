@@ -780,9 +780,33 @@ function handleBirthdaySignup(event) {
     script.src = url;
     document.head.appendChild(script);
 
+    const cleanup = () => {
+        if (window[callbackName]) {
+            delete window[callbackName];
+        }
+        if (script.parentNode) {
+            script.parentNode.removeChild(script);
+        }
+    };
+
+    const handleSignupFailure = (message = 'Sorry, we could not complete your signup. Please try again.') => {
+        birthdayError.textContent = message;
+        cleanup();
+        resetSubmitButton();
+    };
+
+    const timeoutId = window.setTimeout(() => {
+        handleSignupFailure('Request timed out. Please check your connection and try again.');
+    }, 10000); // Fall back after 10 seconds if Mailchimp never responds
+
+    script.onerror = () => {
+        window.clearTimeout(timeoutId);
+        handleSignupFailure('We could not reach the signup service. Please try again in a moment.');
+    };
+
     window[callbackName] = (data) => {
-        delete window[callbackName];
-        document.head.removeChild(script);
+        window.clearTimeout(timeoutId);
+        cleanup();
         
         if (data.result === 'success') {
             const storageKey = birthdaySignupStorageKey || 'birthdayClubSignedUp';
@@ -791,8 +815,7 @@ function handleBirthdaySignup(event) {
             birthdayThanksView.classList.remove('hidden');
         } else {
             const errorMessage = data.msg.replace(/<[^>]*>?/gm, '').replace(/^\d+\s-\s/, '');
-            birthdayError.textContent = errorMessage;
-            resetSubmitButton();
+            handleSignupFailure(errorMessage);
         }
     };
 }
