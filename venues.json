@@ -44,9 +44,9 @@
     "googleReviewLink": "https://www.google.com/search?q=The+Royal+Oak+Hotel+Fitzroy+North",
     "feedbackFormId": "feedback-royal-oak",
     "mailchimp": {
-      "url": "https://example.us1.list-manage.com/subscribe/post-json?u=YOUR_U_VALUE&id=YOUR_ID_VALUE",
-      "tagId": "87654321",
-      "botField": "b_YOUR_U_VALUE_YOUR_ID_VALUE"
+      "url": "https://example.us1.list-manage.com/subscribe/post-json?u=f7e66d56d4c9bf137a316d28c&id=313f667833",
+      "tagId": "7327773",
+      "botField": "b_f7e66d56d4c9bf137a316d28c_313f667833"
     },
     "birthdayClub": {
       "rewardText": "We’ll send you a birthday week drink voucher straight to your inbox!"
