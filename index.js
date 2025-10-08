@@ -1,98 +1,14 @@
 
-    // --- DATA CONFIGURATION ---
-// In a multi-venue setup, these would be loaded from external JSON files.
-
-const VENUE_DATA = {
-  "pubDetails": {
-    "name": "The Palace",
-    "address": "505-507 City Rd, South Melbourne VIC 3205",
-    "logo": "https://cdn.prod.website-files.com/6105ed3c5ed41e814ab426cd/68d79bff223cfd256eb4c20f_images%20(5).png",
-    "instagramHandle": "@thepalacehotel",
-    "instagramUrl": "https://www.instagram.com/thepalacehotel/",
-    "facebookUrl": "https://www.facebook.com/thepalacehotelsouthmelbourne/"
-  },
-  "googleReviewLink": "https://www.google.com/search?q=The+Palace+Hotel+South+Melbourne",
-  "feedbackFormId": "the-palace-feedback",
-  "mailchimp": {
-    "url": "https://beyondresults.us14.list-manage.com/subscribe/post-json?u=f7e66d56d4c9bf137a316d28c&id=313f667833",
-    "tagId": "7327771",
-    "botField": "b_f7e66d56d4c9bf137a316d28c_313f667833"
-  },
-  "birthdayClub": {
-    "rewardText": "We'll send you a voucher for a free drink during your birthday week!"
-  },
-  "spinWheel": {
-    "cooldownDurationHours": 2,
-    "prizes": [
-      { "text": "$10 off food when you spend $50+", "odds": 0.4 },
-      { "text": "Free chips with any drink purchase", "odds": 0.2 },
-      { "text": "Pay schooner price for a pint", "odds": 0.2 },
-      { "text": "Free soft drink", "odds": 0.2 }
-    ]
-  },
-  "stopTheClock": {
-    "cooldownDurationHours": 2,
-    "prizeText": "A free pot of beer (or soft drink)"
-  }
+// --- DATA CONFIGURATION ---
+// Loaded at runtime so venues and global content can change without editing this file.
+const DEFAULT_VENUE_ID = 'the-palace-south-melb';
+const DATA_PATHS = {
+  venues: './venues.json',
+  global: './global.json'
 };
 
-const GLOBAL_DATA = {
-  "trivia": {
-    "theme": "AFL (Australian Football League)",
-    "questions": [
-        {
-            "question": "Which club holds the record for the most VFL/AFL Premierships?",
-            "options": ["Carlton", "Collingwood", "Essendon", "Richmond"],
-            "correctAnswer": "Carlton"
-        },
-        {
-            "question": "Who has kicked the most goals in VFL/AFL history?",
-            "options": ["Gary Ablett Sr.", "Jason Dunstall", "Gordon Coventry", "Tony Lockett"],
-            "correctAnswer": "Tony Lockett"
-        },
-        {
-            "question": "Which player has won the most Brownlow Medals?",
-            "options": ["Dick Reynolds", "Haydn Bunton Sr.", "Ian Stewart", "Nat Fyfe"],
-            "correctAnswer": "Nat Fyfe"
-        },
-        {
-            "question": "What year was the Australian Football League (AFL) officially formed, succeeding the VFL?",
-            "options": ["1985", "1990", "1995", "2000"],
-            "correctAnswer": "1990"
-        },
-        {
-            "question": "Which team won the inaugural AFLW premiership in 2017?",
-            "options": ["Brisbane Lions", "Adelaide Crows", "Western Bulldogs", "Collingwood"],
-            "correctAnswer": "Adelaide Crows"
-        },
-        {
-            "question": "What is the nickname of the Hawthorn Football Club?",
-            "options": ["The Eagles", "The Hawks", "The Power", "The Suns"],
-            "correctAnswer": "The Hawks"
-        },
-        {
-            "question": "The 'Grand Final' is traditionally played at which stadium?",
-            "options": ["Optus Stadium", "The Gabba", "Adelaide Oval", "MCG"],
-            "correctAnswer": "MCG"
-        },
-        {
-            "question": "Who is the current CEO of the AFL?",
-            "options": ["Gillon McLachlan", "Andrew Dillon", "Eddie McGuire", "Jeff Kennett"],
-            "correctAnswer": "Andrew Dillon"
-        },
-        {
-            "question": "Which two teams compete in the 'Showdown'?",
-            "options": ["West Coast & Fremantle", "Sydney & GWS", "Adelaide & Port Adelaide", "Collingwood & Carlton"],
-            "correctAnswer": "Adelaide & Port Adelaide"
-        },
-        {
-            "question": "A 'torpedo' or 'torp' is a type of what in AFL?",
-            "options": ["Tackle", "Kick", "Handball", "Mark"],
-            "correctAnswer": "Kick"
-        }
-    ]
-  }
-};
+let VENUE_DATA;
+let GLOBAL_DATA;
 
 
 // --- STATE ---
@@ -129,6 +45,8 @@ const copyIconWrapper = document.getElementById('copy-icon-wrapper');
 const checkIconWrapper = document.getElementById('check-icon-wrapper');
 const openInstagramLink = document.getElementById('open-instagram-link');
 const googleReviewLink = document.getElementById('google-review-link');
+const mainContent = document.querySelector('main');
+const layoutContainer = document.querySelector('.container');
 
 // Stop The Clock Game
 const stopClockTimer = document.getElementById('stop-clock-timer');
@@ -229,17 +147,60 @@ const birthdayClubDescription = document.getElementById('birthday-club-descripti
  * Copies the pub's Instagram handle to the clipboard and shows feedback.
  */
 function copyHandleToClipboard() {
-  navigator.clipboard.writeText(VENUE_DATA.pubDetails.instagramHandle).then(() => {
+  const handle = VENUE_DATA?.pubDetails?.instagramHandle;
+  if (!handle) return;
+
+  const showSuccess = () => {
     copyHandleText.textContent = 'Copied!';
     copyIconWrapper.classList.add('hidden');
     checkIconWrapper.classList.remove('hidden');
 
     setTimeout(() => {
-      copyHandleText.textContent = `Copy Handle ${VENUE_DATA.pubDetails.instagramHandle}`;
+      copyHandleText.textContent = `Copy Handle ${handle}`;
       copyIconWrapper.classList.remove('hidden');
       checkIconWrapper.classList.add('hidden');
     }, 2000);
-  });
+  };
+
+  const showFailure = () => {
+    copyHandleText.textContent = 'Copy not supported on this device';
+    copyIconWrapper.classList.remove('hidden');
+    checkIconWrapper.classList.add('hidden');
+  };
+
+  const fallbackCopy = () => {
+    const tempInput = document.createElement('input');
+    tempInput.type = 'text';
+    tempInput.value = handle;
+    tempInput.setAttribute('aria-hidden', 'true');
+    tempInput.style.position = 'absolute';
+    tempInput.style.left = '-9999px';
+    document.body.appendChild(tempInput);
+    tempInput.select();
+
+    let successful = false;
+    try {
+      successful = document.execCommand('copy');
+    } catch (error) {
+      successful = false;
+    } finally {
+      document.body.removeChild(tempInput);
+    }
+
+    if (successful) {
+      showSuccess();
+    } else {
+      showFailure();
+    }
+  };
+
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(handle)
+      .then(showSuccess)
+      .catch(() => fallbackCopy());
+  } else {
+    fallbackCopy();
+  }
 }
 
 /**
@@ -444,28 +405,43 @@ function describeArc(x, y, radius, startAngle, endAngle) {
 }
 
 function generateWheelSegments() {
-    const prizes = VENUE_DATA.spinWheel.prizes;
+    const prizes = Array.isArray(VENUE_DATA?.spinWheel?.prizes) ? VENUE_DATA.spinWheel.prizes : [];
     const colors = ["#ef4444", "#f97316", "#3b82f6", "#8b5cf6", "#10b981", "#ec4899"];
     let currentAngle = 0;
     
     wheelSegmentsData = []; // Reset segment data
     wheelSegmentsContainer.innerHTML = ''; // Clear existing segments
 
+    if (!prizes.length) {
+        return;
+    }
+
+    const oddsTotal = prizes.reduce((sum, prize) => {
+        const numericOdds = Number(prize.odds);
+        return Number.isFinite(numericOdds) ? sum + numericOdds : sum;
+    }, 0);
+    const useEvenSplit = oddsTotal <= 0;
+
     prizes.forEach((prize, index) => {
-        const angle = prize.odds * 360;
+        const numericOdds = Number(prize.odds);
+        const normalizedOdds = useEvenSplit
+            ? 1 / prizes.length
+            : (Number.isFinite(numericOdds) ? numericOdds / oddsTotal : 0);
+        const angle = normalizedOdds * 360;
+        const maxAngle = index === prizes.length - 1 ? 360 : currentAngle + angle;
         const segmentData = {
             prize: prize,
             minAngle: currentAngle,
-            maxAngle: currentAngle + angle
+            maxAngle: maxAngle
         };
         wheelSegmentsData.push(segmentData);
 
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        path.setAttribute("d", describeArc(100, 100, 100, currentAngle, currentAngle + angle));
+        path.setAttribute("d", describeArc(100, 100, 100, currentAngle, maxAngle));
         path.setAttribute("fill", colors[index % colors.length]);
         wheelSegmentsContainer.appendChild(path);
 
-        currentAngle += angle;
+        currentAngle = maxAngle;
     });
 }
 
@@ -512,6 +488,11 @@ function startCooldownTimer(expiryTime) {
 
 function spinTheWheel() {
     if (isSpinning) return;
+    if (!Array.isArray(VENUE_DATA?.spinWheel?.prizes) || VENUE_DATA.spinWheel.prizes.length === 0) {
+        spinButton.disabled = true;
+        spinButton.textContent = 'No prizes configured';
+        return;
+    }
     const cooldownMs = VENUE_DATA.spinWheel.cooldownDurationHours * 60 * 60 * 1000;
     const expiryTime = Date.now() + cooldownMs;
     isSpinning = true;
@@ -815,115 +796,263 @@ function handleBirthdaySignup(event) {
 }
 
 
+function clearNotice() {
+    const notice = document.getElementById('app-notice');
+    if (notice) {
+        notice.remove();
+    }
+    if (mainContent) {
+        mainContent.classList.remove('hidden');
+    }
+    [pubInstagramLink, pubFacebookLink].forEach(link => {
+        if (!link) return;
+        link.removeAttribute('aria-disabled');
+        link.style.pointerEvents = '';
+        link.style.opacity = '';
+    });
+}
+
+function updateHeaderForMessage(title, subtitle) {
+    if (pubLogo) {
+        pubLogo.removeAttribute('src');
+        pubLogo.alt = title;
+    }
+    if (pubName) {
+        pubName.textContent = title;
+    }
+    if (pubAddress) {
+        pubAddress.textContent = subtitle;
+    }
+    if (pubInstagramHandle) {
+        pubInstagramHandle.textContent = '';
+    }
+    [pubInstagramLink, pubFacebookLink].forEach(link => {
+        if (!link) return;
+        link.removeAttribute('href');
+        link.setAttribute('aria-disabled', 'true');
+        link.style.pointerEvents = 'none';
+        link.style.opacity = '0.5';
+    });
+    if (copyHandleText) {
+        copyHandleText.textContent = 'Copy Handle';
+    }
+}
+
+function renderNotice(title, message, extraLines = []) {
+    if (mainContent) {
+        mainContent.classList.add('hidden');
+    }
+    if (!layoutContainer) return;
+
+    let notice = document.getElementById('app-notice');
+    if (notice) {
+        notice.remove();
+    }
+
+    notice = document.createElement('div');
+    notice.id = 'app-notice';
+    notice.className = 'bg-white rounded-2xl p-6 shadow-lg text-center space-y-3';
+
+    const headingEl = document.createElement('h2');
+    headingEl.className = 'text-2xl font-bold text-gray-800';
+    headingEl.textContent = title;
+    notice.appendChild(headingEl);
+
+    const fragment = document.createDocumentFragment();
+    const mainParagraph = document.createElement('p');
+    mainParagraph.className = 'text-gray-600';
+    mainParagraph.textContent = message;
+    fragment.appendChild(mainParagraph);
+
+    extraLines
+        .filter(Boolean)
+        .forEach(line => {
+            const paragraph = document.createElement('p');
+            paragraph.className = 'text-sm text-gray-500';
+            paragraph.textContent = line;
+            fragment.appendChild(paragraph);
+        });
+
+    notice.appendChild(fragment);
+    layoutContainer.appendChild(notice);
+}
+
+function renderVenueNotFound(requestedId, availableIds = []) {
+    const venueList = availableIds.filter(Boolean);
+    const availableMessage = venueList.length
+        ? `Available venue codes: ${venueList.join(', ')}`
+        : '';
+
+    updateHeaderForMessage(
+        'Venue not found',
+        requestedId
+            ? `We couldn't find details for "${requestedId}".`
+            : 'No venue was specified.'
+    );
+
+    const extraLines = [
+        'Please double-check the link or contact the venue for the correct QR code.',
+        availableMessage
+    ];
+
+    renderNotice('Venue not found', 'We could not load the requested venue details.', extraLines);
+}
+
+function renderDataLoadError() {
+    updateHeaderForMessage('Unable to load venue', 'Please refresh the page to try again.');
+    renderNotice(
+        'Something went wrong',
+        'We had trouble loading the venue information. Please check your connection and try again.'
+    );
+}
+
 /**
  * Initializes the application.
  */
-function init() {
-  // Populate pub details
-  const { pubDetails } = VENUE_DATA;
-  pubLogo.src = pubDetails.logo;
-  pubLogo.alt = `${pubDetails.name} logo`;
-  pubName.textContent = pubDetails.name;
-  pubAddress.textContent = pubDetails.address;
-  pubInstagramLink.href = pubDetails.instagramUrl;
-  pubFacebookLink.href = pubDetails.facebookUrl;
-  pubInstagramHandle.textContent = pubDetails.instagramHandle;
-  copyHandleText.textContent = `Copy Handle ${pubDetails.instagramHandle}`;
-  openInstagramLink.href = `https://www.instagram.com/${pubDetails.instagramHandle.substring(1)}/`;
-  googleReviewLink.href = VENUE_DATA.googleReviewLink;
-  reviewCardTitle.textContent = `Enjoying your time at ${pubDetails.name}?`;
-  
-  // Configure Netlify form
-  reviewFeedbackForm.setAttribute('name', VENUE_DATA.feedbackFormId);
-  reviewFeedbackFormNameInput.value = VENUE_DATA.feedbackFormId;
+async function init() {
+    const params = new URLSearchParams(window.location.search);
+    const requestedVenueId = params.get('venue');
+    const venueId = requestedVenueId || DEFAULT_VENUE_ID;
 
-  // Populate dynamic text
-  triviaTheme.textContent = GLOBAL_DATA.trivia.theme;
-  birthdayClubDescription.textContent = VENUE_DATA.birthdayClub.rewardText;
+    try {
+        const [venuesResponse, globalResponse] = await Promise.all([
+            fetch(DATA_PATHS.venues),
+            fetch(DATA_PATHS.global)
+        ]);
 
-  // Generate wheel
-  generateWheelSegments();
-  
-  // Add event listeners
-  copyHandleButton.addEventListener('click', copyHandleToClipboard);
-  startTriviaButton.addEventListener('click', startGame);
-  playAgainButton.addEventListener('click', restartGame);
-  
-  reviewEmojiButtons.forEach(button => button.addEventListener('click', handleReviewEmojiClick));
-  reviewFeedbackForm.addEventListener('submit', handleFeedbackSubmit);
+        if (!venuesResponse.ok || !globalResponse.ok) {
+            throw new Error('Failed to fetch configuration files.');
+        }
 
-  // Birthday Club
-  if (localStorage.getItem('birthdayClubSignedUp') === 'true') {
-      birthdayInitialView.classList.add('hidden');
-      birthdayThanksView.classList.remove('hidden');
-  } else {
-      birthdayForm.addEventListener('submit', handleBirthdaySignup);
-      
-      customMonthSelectButton.addEventListener('click', () => {
-          const isExpanded = customMonthSelectButton.getAttribute('aria-expanded') === 'true';
-          customMonthSelectButton.setAttribute('aria-expanded', String(!isExpanded));
-          customMonthSelectOptions.classList.toggle('hidden');
-      });
+        const venues = await venuesResponse.json();
+        const globalData = await globalResponse.json();
+        const selectedVenue = venues[venueId];
 
-      customMonthSelectOptions.querySelectorAll('li').forEach(option => {
-          option.addEventListener('click', () => {
-              customMonthSelectValue.textContent = option.textContent;
-              customMonthSelectButton.classList.remove('text-gray-500');
-              birthdayMonthInput.value = option.dataset.value;
-              customMonthSelectOptions.classList.add('hidden');
-              customMonthSelectButton.setAttribute('aria-expanded', 'false');
-          });
-      });
-      
-      document.addEventListener('click', (event) => {
-          if (!customMonthSelect.contains(event.target)) {
-              customMonthSelectOptions.classList.add('hidden');
-              customMonthSelectButton.setAttribute('aria-expanded', 'false');
-          }
-      });
-  }
+        if (!selectedVenue) {
+            renderVenueNotFound(requestedVenueId, Object.keys(venues));
+            return;
+        }
 
-  // Modal listeners
-  showTermsButton.addEventListener('click', () => termsModal.classList.remove('hidden'));
-  closeTermsButton.addEventListener('click', () => termsModal.classList.add('hidden'));
-  termsModal.addEventListener('click', (e) => { if (e.target === termsModal) termsModal.classList.add('hidden'); });
+        VENUE_DATA = selectedVenue;
+        GLOBAL_DATA = globalData;
+    } catch (error) {
+        console.error('Error loading configuration data', error);
+        renderDataLoadError();
+        return;
+    }
 
-  showStopClockTermsButton.addEventListener('click', () => stopClockTermsModal.classList.remove('hidden'));
-  closeStopClockTermsButton.addEventListener('click', () => stopClockTermsModal.classList.add('hidden'));
-  stopClockTermsModal.addEventListener('click', (e) => { if (e.target === stopClockTermsModal) stopClockTermsModal.classList.add('hidden'); });
+    clearNotice();
 
-  showSpinWheelTermsButton.addEventListener('click', () => spinWheelTermsModal.classList.remove('hidden'));
-  closeSpinWheelTermsButton.addEventListener('click', () => spinWheelTermsModal.classList.add('hidden'));
-  spinWheelTermsModal.addEventListener('click', (e) => { if (e.target === spinWheelTermsModal) spinWheelTermsModal.classList.add('hidden'); });
+    const { pubDetails } = VENUE_DATA;
+    pubLogo.src = pubDetails.logo;
+    pubLogo.alt = `${pubDetails.name} logo`;
+    pubName.textContent = pubDetails.name;
+    pubAddress.textContent = pubDetails.address;
+    pubInstagramLink.href = pubDetails.instagramUrl;
+    pubFacebookLink.href = pubDetails.facebookUrl;
+    pubInstagramHandle.textContent = pubDetails.instagramHandle;
+    copyHandleText.textContent = `Copy Handle ${pubDetails.instagramHandle}`;
+    openInstagramLink.href = `https://www.instagram.com/${pubDetails.instagramHandle.substring(1)}/`;
+    googleReviewLink.href = VENUE_DATA.googleReviewLink;
+    reviewCardTitle.textContent = `Enjoying your time at ${pubDetails.name}?`;
 
-  showTriviaTermsButton.addEventListener('click', () => triviaTermsModal.classList.remove('hidden'));
-  closeTriviaTermsButton.addEventListener('click', () => triviaTermsModal.classList.add('hidden'));
-  triviaTermsModal.addEventListener('click', (e) => { if (e.target === triviaTermsModal) triviaTermsModal.classList.add('hidden'); });
+    reviewFeedbackForm.setAttribute('name', VENUE_DATA.feedbackFormId);
+    reviewFeedbackFormNameInput.value = VENUE_DATA.feedbackFormId;
 
-  // Stop the clock game listeners
-  stopClockButton.addEventListener('click', handleStopClockButtonClick);
-  stopClockRedeemLaterButton.addEventListener('click', handleStopClockRedeemLater);
-  stopClockRedeemNowButton.addEventListener('click', handleStopClockRedeemNow);
-  stopClockCancelRedemptionButton.addEventListener('click', handleStopClockCancelRedemption);
-  stopClockConfirmRedemptionButton.addEventListener('click', handleStopClockConfirmRedemption);
-  
-  const activeStopClockPrize = getActiveStopClockPrize();
-  if (activeStopClockPrize) {
-      startStopClockCooldownTimer(activeStopClockPrize.expiry);
-  }
+    if (GLOBAL_DATA?.trivia?.theme) {
+        triviaTheme.textContent = GLOBAL_DATA.trivia.theme;
+    }
+    if (VENUE_DATA?.birthdayClub?.rewardText) {
+        birthdayClubDescription.textContent = VENUE_DATA.birthdayClub.rewardText;
+    }
 
-  // Spin wheel and prize modal listeners
-  spinButton.addEventListener('click', spinTheWheel);
-  redeemLaterButton.addEventListener('click', handleRedeemLater);
-  redeemNowButton.addEventListener('click', handleRedeemNow);
-  cancelRedemptionButton.addEventListener('click', handleCancelRedemption);
-  confirmRedemptionButton.addEventListener('click', handleConfirmRedemption);
-  
-  const activePrize = getActivePrize();
-  if (activePrize) {
-      startCooldownTimer(activePrize.expiry);
-  }
+    generateWheelSegments();
+    if (!Array.isArray(VENUE_DATA.spinWheel?.prizes) || VENUE_DATA.spinWheel.prizes.length === 0) {
+        spinButton.disabled = true;
+        spinButton.textContent = 'No prizes configured';
+        spinButton.onclick = null;
+    } else if (!isSpinning) {
+        spinButton.disabled = false;
+        spinButton.textContent = 'Spin!';
+        spinButton.onclick = null;
+    }
+
+    copyHandleButton.addEventListener('click', copyHandleToClipboard);
+    startTriviaButton.addEventListener('click', startGame);
+    playAgainButton.addEventListener('click', restartGame);
+
+    reviewEmojiButtons.forEach(button => button.addEventListener('click', handleReviewEmojiClick));
+    reviewFeedbackForm.addEventListener('submit', handleFeedbackSubmit);
+
+    if (localStorage.getItem('birthdayClubSignedUp') === 'true') {
+        birthdayInitialView.classList.add('hidden');
+        birthdayThanksView.classList.remove('hidden');
+    } else {
+        birthdayForm.addEventListener('submit', handleBirthdaySignup);
+
+        customMonthSelectButton.addEventListener('click', () => {
+            const isExpanded = customMonthSelectButton.getAttribute('aria-expanded') === 'true';
+            customMonthSelectButton.setAttribute('aria-expanded', String(!isExpanded));
+            customMonthSelectOptions.classList.toggle('hidden');
+        });
+
+        customMonthSelectOptions.querySelectorAll('li').forEach(option => {
+            option.addEventListener('click', () => {
+                customMonthSelectValue.textContent = option.textContent;
+                customMonthSelectButton.classList.remove('text-gray-500');
+                birthdayMonthInput.value = option.dataset.value;
+                customMonthSelectOptions.classList.add('hidden');
+                customMonthSelectButton.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!customMonthSelect.contains(event.target)) {
+                customMonthSelectOptions.classList.add('hidden');
+                customMonthSelectButton.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+
+    showTermsButton.addEventListener('click', () => termsModal.classList.remove('hidden'));
+    closeTermsButton.addEventListener('click', () => termsModal.classList.add('hidden'));
+    termsModal.addEventListener('click', (e) => { if (e.target === termsModal) termsModal.classList.add('hidden'); });
+
+    showStopClockTermsButton.addEventListener('click', () => stopClockTermsModal.classList.remove('hidden'));
+    closeStopClockTermsButton.addEventListener('click', () => stopClockTermsModal.classList.add('hidden'));
+    stopClockTermsModal.addEventListener('click', (e) => { if (e.target === stopClockTermsModal) stopClockTermsModal.classList.add('hidden'); });
+
+    showSpinWheelTermsButton.addEventListener('click', () => spinWheelTermsModal.classList.remove('hidden'));
+    closeSpinWheelTermsButton.addEventListener('click', () => spinWheelTermsModal.classList.add('hidden'));
+    spinWheelTermsModal.addEventListener('click', (e) => { if (e.target === spinWheelTermsModal) spinWheelTermsModal.classList.add('hidden'); });
+
+    showTriviaTermsButton.addEventListener('click', () => triviaTermsModal.classList.remove('hidden'));
+    closeTriviaTermsButton.addEventListener('click', () => triviaTermsModal.classList.add('hidden'));
+    triviaTermsModal.addEventListener('click', (e) => { if (e.target === triviaTermsModal) triviaTermsModal.classList.add('hidden'); });
+
+    stopClockButton.addEventListener('click', handleStopClockButtonClick);
+    stopClockRedeemLaterButton.addEventListener('click', handleStopClockRedeemLater);
+    stopClockRedeemNowButton.addEventListener('click', handleStopClockRedeemNow);
+    stopClockCancelRedemptionButton.addEventListener('click', handleStopClockCancelRedemption);
+    stopClockConfirmRedemptionButton.addEventListener('click', handleStopClockConfirmRedemption);
+
+    const activeStopClockPrize = getActiveStopClockPrize();
+    if (activeStopClockPrize) {
+        startStopClockCooldownTimer(activeStopClockPrize.expiry);
+    }
+
+    spinButton.addEventListener('click', spinTheWheel);
+    redeemLaterButton.addEventListener('click', handleRedeemLater);
+    redeemNowButton.addEventListener('click', handleRedeemNow);
+    cancelRedemptionButton.addEventListener('click', handleCancelRedemption);
+    confirmRedemptionButton.addEventListener('click', handleConfirmRedemption);
+
+    const activePrize = getActivePrize();
+    if (activePrize) {
+        startCooldownTimer(activePrize.expiry);
+    }
 }
 
 // --- APP START ---
 document.addEventListener('DOMContentLoaded', init);
+
