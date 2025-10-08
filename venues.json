@@ -1,0 +1,68 @@
+{
+  "the-palace-south-melb": {
+    "pubDetails": {
+      "name": "The Palace",
+      "address": "505-507 City Rd, South Melbourne VIC 3205",
+      "logo": "https://cdn.prod.website-files.com/6105ed3c5ed41e814ab426cd/68d79bff223cfd256eb4c20f_images%20(5).png",
+      "instagramHandle": "@thepalacehotel",
+      "instagramUrl": "https://www.instagram.com/thepalacehotel/",
+      "facebookUrl": "https://www.facebook.com/thepalacehotelsouthmelbourne/"
+    },
+    "googleReviewLink": "https://www.google.com/search?q=The+Palace+Hotel+South+Melbourne",
+    "feedbackFormId": "the-palace-feedback",
+    "mailchimp": {
+      "url": "https://beyondresults.us14.list-manage.com/subscribe/post-json?u=f7e66d56d4c9bf137a316d28c&id=313f667833",
+      "tagId": "7327771",
+      "botField": "b_f7e66d56d4c9bf137a316d28c_313f667833"
+    },
+    "birthdayClub": {
+      "rewardText": "We'll send you a voucher for a free drink during your birthday week!"
+    },
+    "spinWheel": {
+      "cooldownDurationHours": 2,
+      "prizes": [
+        { "text": "$10 off food when you spend $50+", "odds": 0.4 },
+        { "text": "Free chips with any drink purchase", "odds": 0.2 },
+        { "text": "Pay schooner price for a pint", "odds": 0.2 },
+        { "text": "Free soft drink", "odds": 0.2 }
+      ]
+    },
+    "stopTheClock": {
+      "cooldownDurationHours": 2,
+      "prizeText": "A free pot of beer (or soft drink)"
+    }
+  },
+  "the-royal-oak": {
+    "pubDetails": {
+      "name": "The Royal Oak",
+      "address": "442 Nicholson St, Fitzroy North VIC 3068",
+      "logo": "https://picsum.photos/seed/royaloak/100/100",
+      "instagramHandle": "@royaloakfitzroy",
+      "instagramUrl": "https://www.instagram.com/royaloakfitzroy/",
+      "facebookUrl": "https://www.facebook.com/royaloakhotelfitzroy/"
+    },
+    "googleReviewLink": "https://www.google.com/search?q=The+Royal+Oak+Hotel+Fitzroy+North",
+    "feedbackFormId": "feedback-royal-oak",
+    "mailchimp": {
+      "url": "https://example.us1.list-manage.com/subscribe/post-json?u=YOUR_U_VALUE&id=YOUR_ID_VALUE",
+      "tagId": "87654321",
+      "botField": "b_YOUR_U_VALUE_YOUR_ID_VALUE"
+    },
+    "birthdayClub": {
+      "rewardText": "We’ll send you a birthday week drink voucher straight to your inbox!"
+    },
+    "spinWheel": {
+      "cooldownDurationHours": 2,
+      "prizes": [
+        { "text": "Happy Hour pricing all night", "odds": 0.25 },
+        { "text": "Free bowl of chips", "odds": 0.25 },
+        { "text": "Buy 1 jug, get the 2nd half price", "odds": 0.25 },
+        { "text": "Free soft drink", "odds": 0.25 }
+      ]
+    },
+    "stopTheClock": {
+      "cooldownDurationHours": 2,
+      "prizeText": "Win a schooner on the house"
+    }
+  }
+}
