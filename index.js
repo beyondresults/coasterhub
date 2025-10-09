@@ -20,6 +20,8 @@ let currentRotation = 0;
 let cooldownInterval;
 let wheelSegmentsData = []; // To store prize data with angles
 let birthdaySignupStorageKey = 'birthdayClubSignedUp'; // Defaults until venue is resolved
+let spinWheelStorageKey = 'activePrize';
+let stopClockStorageKey = 'stopClockActivePrize';
 
 // Stop the clock game state
 let stopClockInterval = null;
@@ -220,12 +222,12 @@ function formatTime(ms) {
 
 // --- STOP THE CLOCK FUNCTIONS ---
 function getActiveStopClockPrize() {
-    const prizeData = localStorage.getItem('stopClockActivePrize');
+    const prizeData = localStorage.getItem(stopClockStorageKey);
     if (!prizeData) return null;
     try {
         const prize = JSON.parse(prizeData);
         if (Date.now() > prize.expiry) {
-            localStorage.removeItem('stopClockActivePrize');
+            localStorage.removeItem(stopClockStorageKey);
             return null;
         }
         return prize;
@@ -261,7 +263,7 @@ function startStopClockCooldownTimer(expiryTime) {
         const timeLeft = expiryTime - Date.now();
         if (timeLeft <= 0) {
             clearInterval(stopClockCooldownInterval);
-            localStorage.removeItem('stopClockActivePrize');
+            localStorage.removeItem(stopClockStorageKey);
             resetStopClock();
         } else {
              if (activePrize && !activePrize.redeemed) {
@@ -302,7 +304,7 @@ function handleStopClockConfirmRedemption() {
     let prize = getActiveStopClockPrize();
     if (prize) {
         prize.redeemed = true;
-        localStorage.setItem('stopClockActivePrize', JSON.stringify(prize));
+        localStorage.setItem(stopClockStorageKey, JSON.stringify(prize));
         stopClockPrizeConfirmationView.classList.add('hidden');
         stopClockPrizeRedeemedView.classList.remove('hidden');
         setTimeout(() => {
@@ -339,7 +341,7 @@ function stopStopClock() {
         const cooldownMs = VENUE_DATA.stopTheClock.cooldownDurationHours * 60 * 60 * 1000;
         const expiryTime = Date.now() + cooldownMs;
         const prizeData = { text: VENUE_DATA.stopTheClock.prizeText, expiry: expiryTime, redeemed: false };
-        localStorage.setItem('stopClockActivePrize', JSON.stringify(prizeData));
+        localStorage.setItem(stopClockStorageKey, JSON.stringify(prizeData));
         
         setTimeout(() => {
             showStopClockPrizeModal();
@@ -471,7 +473,7 @@ function startCooldownTimer(expiryTime) {
             spinButton.disabled = false;
             spinButton.textContent = 'Spin!';
             isSpinning = false;
-            localStorage.removeItem('activePrize');
+            localStorage.removeItem(spinWheelStorageKey);
         } else {
              if (activePrize && !activePrize.redeemed) {
                 spinButton.textContent = 'View Your Prize';
@@ -517,19 +519,19 @@ function spinTheWheel() {
             expiry: expiryTime, 
             redeemed: false 
         };
-        localStorage.setItem('activePrize', JSON.stringify(prizeData));
+        localStorage.setItem(spinWheelStorageKey, JSON.stringify(prizeData));
         showPrizeModal();
         startCooldownTimer(expiryTime);
     }, { once: true });
 }
 
 function getActivePrize() {
-    const prizeData = localStorage.getItem('activePrize');
+    const prizeData = localStorage.getItem(spinWheelStorageKey);
     if (!prizeData) return null;
     try {
         const prize = JSON.parse(prizeData);
         if (Date.now() > prize.expiry) {
-            localStorage.removeItem('activePrize');
+            localStorage.removeItem(spinWheelStorageKey);
             return null;
         }
         return prize;
@@ -580,7 +582,7 @@ function handleConfirmRedemption() {
     let prize = getActivePrize();
     if (prize) {
         prize.redeemed = true;
-        localStorage.setItem('activePrize', JSON.stringify(prize));
+        localStorage.setItem(spinWheelStorageKey, JSON.stringify(prize));
         prizeConfirmationView.classList.add('hidden');
         prizeRedeemedView.classList.remove('hidden');
         setTimeout(() => {
@@ -1013,6 +1015,8 @@ async function init() {
     const requestedVenueId = params.get('venue');
     const venueId = requestedVenueId || DEFAULT_VENUE_ID;
     birthdaySignupStorageKey = `birthdayClubSignedUp:${venueId}`;
+    spinWheelStorageKey = `activePrize:${venueId}`;
+    stopClockStorageKey = `stopClockActivePrize:${venueId}`;
 
     try {
         const [venuesResponse, globalResponse] = await Promise.all([
@@ -1087,6 +1091,22 @@ async function init() {
     if (localStorage.getItem('birthdayClubSignedUp') === 'true' && !localStorage.getItem(birthdaySignupStorageKey)) {
         localStorage.setItem(birthdaySignupStorageKey, 'true');
         localStorage.removeItem('birthdayClubSignedUp');
+    }
+
+    if (!localStorage.getItem(spinWheelStorageKey)) {
+        const legacySpinPrize = localStorage.getItem('activePrize');
+        if (legacySpinPrize) {
+            localStorage.setItem(spinWheelStorageKey, legacySpinPrize);
+            localStorage.removeItem('activePrize');
+        }
+    }
+
+    if (!localStorage.getItem(stopClockStorageKey)) {
+        const legacyStopClockPrize = localStorage.getItem('stopClockActivePrize');
+        if (legacyStopClockPrize) {
+            localStorage.setItem(stopClockStorageKey, legacyStopClockPrize);
+            localStorage.removeItem('stopClockActivePrize');
+        }
     }
 
     if (localStorage.getItem(birthdaySignupStorageKey) === 'true') {
