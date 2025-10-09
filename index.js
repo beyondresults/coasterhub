@@ -22,6 +22,7 @@ let wheelSegmentsData = []; // To store prize data with angles
 let birthdaySignupStorageKey = 'birthdayClubSignedUp'; // Defaults until venue is resolved
 let spinWheelStorageKey = 'activePrize';
 let stopClockStorageKey = 'stopClockActivePrize';
+let currentVenueId = DEFAULT_VENUE_ID;
 
 // Stop the clock game state
 let stopClockInterval = null;
@@ -692,34 +693,55 @@ function handleReviewEmojiClick(event) {
     }
 }
 
-function handleFeedbackSubmit(event) {
+async function handleFeedbackSubmit(event) {
     event.preventDefault();
-
-    const form = event.target;
-    const formData = new FormData(form);
 
     reviewSubmitFeedbackButton.disabled = true;
     reviewSubmitFeedbackButton.textContent = 'Submitting...';
 
-    fetch('/', {
-        method: 'POST',
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData).toString()
-    })
-    .then(() => {
+    const webhookUrl = GLOBAL_DATA?.feedback?.webhookUrl;
+    const message = reviewFeedbackTextarea.value?.trim() || '';
+
+    if (!webhookUrl) {
+        alert('Feedback submission is not configured.');
+        reviewSubmitFeedbackButton.disabled = false;
+        reviewSubmitFeedbackButton.textContent = 'Submit Feedback';
+        return;
+    }
+
+    if (!message) {
+        alert('Please add a short note so we can help.');
+        reviewSubmitFeedbackButton.disabled = false;
+        reviewSubmitFeedbackButton.textContent = 'Submit Feedback';
+        return;
+    }
+
+    try {
+        const response = await fetch(webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                venue_id: currentVenueId,
+                message
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Feedback webhook responded with status ${response.status}`);
+        }
+
         reviewFeedbackForm.classList.add('hidden');
         reviewCardTitle.textContent = 'Thank You!';
         reviewCardSubtitle.classList.add('hidden');
         reviewFeedbackThanks.classList.remove('hidden');
-    })
-    .catch((error) => {
+        reviewFeedbackTextarea.value = '';
+    } catch (error) {
         alert('Sorry, there was an error submitting your feedback.');
-        console.error(error);
-    })
-    .finally(() => {
+        console.error('Feedback submission failed', error);
+    } finally {
         reviewSubmitFeedbackButton.disabled = false;
         reviewSubmitFeedbackButton.textContent = 'Submit Feedback';
-    });
+    }
 }
 
 function hideBirthdayCard() {
@@ -1017,6 +1039,7 @@ async function init() {
     birthdaySignupStorageKey = `birthdayClubSignedUp:${venueId}`;
     spinWheelStorageKey = `activePrize:${venueId}`;
     stopClockStorageKey = `stopClockActivePrize:${venueId}`;
+    currentVenueId = venueId;
 
     try {
         const [venuesResponse, globalResponse] = await Promise.all([
