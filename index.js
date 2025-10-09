@@ -699,15 +699,8 @@ async function handleFeedbackSubmit(event) {
     reviewSubmitFeedbackButton.disabled = true;
     reviewSubmitFeedbackButton.textContent = 'Submitting...';
 
-    const webhookUrl = GLOBAL_DATA?.feedback?.webhookUrl;
+    const submitUrl = GLOBAL_DATA?.feedback?.submitUrl || '/.netlify/functions/submit-feedback';
     const message = reviewFeedbackTextarea.value?.trim() || '';
-
-    if (!webhookUrl) {
-        alert('Feedback submission is not configured.');
-        reviewSubmitFeedbackButton.disabled = false;
-        reviewSubmitFeedbackButton.textContent = 'Submit Feedback';
-        return;
-    }
 
     if (!message) {
         alert('Please add a short note so we can help.');
@@ -717,7 +710,7 @@ async function handleFeedbackSubmit(event) {
     }
 
     try {
-        const response = await fetch(webhookUrl, {
+        const response = await fetch(submitUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
