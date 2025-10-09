@@ -53,5 +53,8 @@
         "correctAnswer": "Kick"
       }
     ]
+  },
+  "feedback": {
+    "webhookUrl": "https://hooks.airtable.com/workflows/v1/genericWebhook/app26LKQ17RJsAp51/wflvld4gkVDfoFpYJ/wtrzpBEcRZiIoMeWr"
   }
 }
