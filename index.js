@@ -127,6 +127,7 @@ const birthdayThanksView = document.getElementById('birthday-thanks-view');
 const birthdayForm = document.getElementById('birthday-form');
 const birthdayEmailInput = document.getElementById('birthday-email');
 const birthdayMonthInput = document.getElementById('birthday-month');
+const birthdayCard = document.getElementById('birthday-club-card');
 const birthdayDayInput = document.getElementById('birthday-day');
 const birthdayError = document.getElementById('birthday-error');
 const birthdaySubmitButton = document.getElementById('birthday-submit-button');
@@ -719,6 +720,77 @@ function handleFeedbackSubmit(event) {
     });
 }
 
+function hideBirthdayCard() {
+    if (birthdayCard) {
+        birthdayCard.classList.add('hidden');
+        birthdayCard.setAttribute('hidden', '');
+    }
+}
+
+function showBirthdaySuccessToast() {
+    if (!document.body) return;
+
+    const existingToast = document.getElementById('birthday-toast');
+    if (existingToast) {
+        existingToast.remove();
+    }
+
+    const wrapper = document.createElement('div');
+    wrapper.id = 'birthday-toast';
+    Object.assign(wrapper.style, {
+        position: 'fixed',
+        left: '50%',
+        bottom: '24px',
+        transform: 'translateX(-50%)',
+        zIndex: '1000',
+        transition: 'opacity 0.3s ease',
+        opacity: '0',
+        pointerEvents: 'none'
+    });
+
+    const toast = document.createElement('div');
+    Object.assign(toast.style, {
+        backgroundColor: '#047857',
+        color: '#ffffff',
+        padding: '12px 20px',
+        borderRadius: '9999px',
+        boxShadow: '0 10px 25px rgba(4, 120, 87, 0.35)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        fontWeight: '600',
+        pointerEvents: 'auto'
+    });
+
+    const icon = document.createElement('span');
+    icon.textContent = '✓';
+    Object.assign(icon.style, {
+        fontSize: '18px',
+        lineHeight: '1'
+    });
+
+    const message = document.createElement('span');
+    message.textContent = 'Thanks for joining the Birthday Club! Keep an eye on your inbox.';
+
+    toast.appendChild(icon);
+    toast.appendChild(message);
+    wrapper.appendChild(toast);
+    document.body.appendChild(wrapper);
+
+    requestAnimationFrame(() => {
+        wrapper.style.opacity = '1';
+    });
+
+    setTimeout(() => {
+        wrapper.style.opacity = '0';
+        setTimeout(() => {
+            if (wrapper.parentNode) {
+                wrapper.parentNode.removeChild(wrapper);
+            }
+        }, 300);
+    }, 4000);
+}
+
 function handleBirthdaySignup(event) {
     event.preventDefault();
     birthdayError.textContent = '';
@@ -813,6 +885,8 @@ function handleBirthdaySignup(event) {
             localStorage.setItem(storageKey, 'true');
             birthdayInitialView.classList.add('hidden');
             birthdayThanksView.classList.remove('hidden');
+            hideBirthdayCard();
+            showBirthdaySuccessToast();
         } else {
             const errorMessage = data.msg.replace(/<[^>]*>?/gm, '').replace(/^\d+\s-\s/, '');
             handleSignupFailure(errorMessage);
@@ -1018,6 +1092,7 @@ async function init() {
     if (localStorage.getItem(birthdaySignupStorageKey) === 'true') {
         birthdayInitialView.classList.add('hidden');
         birthdayThanksView.classList.remove('hidden');
+        hideBirthdayCard();
     } else {
         birthdayForm.addEventListener('submit', handleBirthdaySignup);
 
