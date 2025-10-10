@@ -21,10 +21,10 @@
     "spinWheel": {
       "cooldownDurationHours": 2,
       "prizes": [
-        { "text": "$10 off food when you spend $50+", "odds": 0.4 },
-        { "text": "Free chips with any drink purchase", "odds": 0.2 },
-        { "text": "Pay schooner price for a pint", "odds": 0.2 },
-        { "text": "Free soft drink", "odds": 0.2 }
+        { "text": "$10 off food when you spend $50+", "odds": 0.7 },
+        { "text": "Free chips with any drink purchase", "odds": 0.1 },
+        { "text": "Pay schooner price for a pint", "odds": 0.1 },
+        { "text": "Free soft drink", "odds": 0.1 }
       ]
     },
     "stopTheClock": {
