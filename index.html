@@ -1,486 +1,480 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Poaster Coaster</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-      body {
-        font-family: 'Poppins', sans-serif;
-      }
-      .hidden {
-        display: none;
-      }
-      #custom-month-select-button[aria-expanded="true"] > #custom-month-select-arrow {
-        transform: rotate(180deg);
-      }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://aistudiocdn.com/react@^19.1.1",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
-    "react/": "https://aistudiocdn.com/react@^19.1.1/",
-    "react-dom": "https://aistudiocdn.com/react-dom@^19.1.1"
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Poaster Coaster</title>
+      <script src="https://cdn.tailwindcss.com"></script>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+      <style>
+        body {
+          font-family: 'Poppins', sans-serif;
+        }
+        .hidden {
+          display: none;
+        }
+        #custom-month-select-button[aria-expanded="true"] > #custom-month-select-arrow {
+          transform: rotate(180deg);
+        }
+      </style>
+    <script type="importmap">
+  {
+    "imports": {
+      "react": "https://aistudiocdn.com/react@^19.1.1",
+      "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+      "react/": "https://aistudiocdn.com/react@^19.1.1/",
+      "react-dom": "https://aistudiocdn.com/react-dom@^19.1.1"
+    }
   }
-}
-</script>
-</head>
-  <body class="bg-[#F6E9D7] min-h-screen antialiased text-gray-800">
-    <div class="container mx-auto max-w-md p-4 space-y-6">
-      
-      <!-- Header -->
-      <header>
-        <div class="bg-white rounded-2xl p-6 shadow-lg flex items-center space-x-4">
-          <img id="pub-logo" src="" alt="Pub logo" class="w-16 h-16 rounded-2xl shadow-md flex-shrink-0" />
-          <div>
-            <p class="text-sm text-gray-500 -mb-1">Welcome to</p>
-            <h1 id="pub-name" class="text-2xl font-bold text-[#004225]"></h1>
-            <p id="pub-address" class="text-sm text-gray-500"></p>
-            <div class="flex items-center space-x-3 mt-2">
-              <a id="pub-instagram-link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="text-gray-500 hover:text-gray-800 transition-colors">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 016.08 2.525c.636-.247 1.363-.416 2.427.465C9.53 2.013 9.884 2 12.315 2zM12 7.177a4.823 4.823 0 100 9.646 4.823 4.823 0 000-9.646zm0 7.94a3.117 3.117 0 110-6.234 3.117 3.117 0 010 6.234zm6.09-8.23a1.147 1.147 0 10-2.294 0 1.147 1.147 0 002.294 0z" clip-rule="evenodd" /></svg>
-              </a>
-              <a id="pub-facebook-link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="text-gray-500 hover:text-gray-800 transition-colors">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </header>
-      
-      <main class="space-y-6">
-
-        <!-- Stop The Clock Game -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg text-center">
-          <div class="mx-auto bg-pink-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
-              <span class="text-4xl">⏱️</span>
-          </div>
-          <h2 class="text-2xl font-bold text-gray-800 mb-2">Stop at 10 to Win!</h2>
-          <p class="text-gray-600 mb-6">Think you have perfect timing? Stop it bang on 10.00 and score a FREE drink!</p>
-          
-          <div class="bg-gray-100 rounded-xl p-4 my-6">
-            <p id="stop-clock-timer" class="text-6xl font-bold font-mono text-gray-800 select-none">0.00</p>
-          </div>
-          <p id="stop-clock-result" class="text-lg font-semibold mb-4 min-h-[1.5em]"></p>
-          
-          <button id="stop-clock-button" class="w-full bg-pink-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-pink-600 transition-colors active:scale-95 disabled:bg-gray-400 disabled:cursor-not-allowed">
-            Start
-          </button>
-          <button id="show-stop-clock-terms-button" class="text-xs text-gray-400 mt-4 underline hover:text-gray-600 transition-colors">Terms & Conditions apply.</button>
-        </div>
-
-        <!-- Spin Wheel Card -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg text-center">
-            <div class="mx-auto bg-purple-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
-                <span class="text-4xl">🏆</span>
-            </div>
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">Spin to Win!</h2>
-            <p class="text-gray-600 mb-6">Spin the wheel to win an instant prize!</p>
-
-            <div id="wheel-container" class="relative w-[280px] h-[280px] mx-auto mb-6">
-                <!-- SVG Pointer -->
-                <div class="absolute -top-1 left-1/2 -translate-x-1/2 z-20 drop-shadow-lg">
-                    <svg width="40" height="50" viewBox="0 0 40 50">
-                        <path d="M20 50 C 25 40, 25 40, 30 30 L 30 10 Q 30 0, 20 0 Q 10 0, 10 10 L 10 30 C 15 40, 15 40, 20 50 Z" fill="#b91c1c"></path>
-                        <circle cx="20" cy="15" r="5" fill="#fef2f2"></circle>
-                    </svg>
-                </div>
-                <!-- SVG Wheel -->
-                <div id="wheel" class="w-full h-full transition-transform duration-[5000ms] ease-[cubic-bezier(0.1,0,0.25,1)]">
-                    <svg viewBox="0 0 200 200" class="w-full h-full rounded-full shadow-xl">
-                        <g id="wheel-segments" transform="rotate(-90 100 100)">
-                            <!-- Segments will be generated by JS -->
-                        </g>
-                        <!-- Center Hub -->
-                        <circle cx="100" cy="100" r="20" fill="white" stroke="#e5e7eb" stroke-width="4"></circle>
-                        <circle cx="100" cy="100" r="15" fill="#e5e7eb" stroke="#d1d5db" stroke-width="2"></circle>
-                    </svg>
-                </div>
-            </div>
-
-            <button id="spin-button" class="w-full bg-purple-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-purple-700 active:scale-95 transition-all disabled:bg-gray-400 disabled:active:scale-100">
-                Spin!
-            </button>
-            <button id="show-spin-wheel-terms-button" class="text-xs text-gray-400 mt-4 underline hover:text-gray-600 transition-colors">Terms & Conditions apply.</button>
-        </div>
-
-        <!-- Trivia Game -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg">
-          <!-- Start Screen -->
-          <div id="trivia-start-screen" class="text-center">
-            <div class="mx-auto bg-green-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
-              <span class="text-4xl">🎲</span>
-            </div>
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">Weekly Trivia</h2>
-            <p class="text-gray-500 mb-2">Challenge your mates to to trivia. This week's trivia theme is:</p>
-            <p id="trivia-theme" class="text-gray-800 font-semibold text-lg mb-6"></p>
-            <button id="start-trivia-button" class="w-full bg-[#004225] text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-[#00351e] transition-colors">
-              Start Trivia
-            </button>
-            <button id="show-trivia-terms-button" class="text-xs text-gray-400 mt-4 underline hover:text-gray-600 transition-colors">Terms & Conditions apply.</button>
-          </div>
-          
-          <!-- Playing Screen -->
-          <div id="trivia-playing-screen" class="hidden">
-            <div class="flex justify-between items-center mb-4">
-              <h2 class="text-lg font-bold text-[#004225]">Pub Trivia</h2>
-              <div class="flex items-center space-x-3">
-                <span id="trivia-timer" class="text-sm font-mono text-gray-500">0.00s</span>
-                <span id="question-counter" class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full"></span>
+  </script>
+  </head>
+    <body class="bg-[#F6E9D7] min-h-screen antialiased text-gray-800">
+      <div class="container mx-auto max-w-md p-4 space-y-6">
+        
+        <!-- Header -->
+        <header>
+          <div class="bg-white rounded-2xl p-6 shadow-lg flex items-center space-x-4">
+            <img id="pub-logo" src="" alt="Pub logo" class="w-16 h-16 rounded-2xl shadow-md flex-shrink-0" />
+            <div>
+              <p class="text-sm text-gray-500 -mb-1">Welcome to</p>
+              <h1 id="pub-name" class="text-2xl font-bold text-[#004225]"></h1>
+              <p id="pub-address" class="text-sm text-gray-500"></p>
+              <div class="flex items-center space-x-3 mt-2">
+                <a id="pub-instagram-link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="text-gray-500 hover:text-gray-800 transition-colors">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 016.08 2.525c.636-.247 1.363-.416 2.427.465C9.53 2.013 9.884 2 12.315 2zM12 7.177a4.823 4.823 0 100 9.646 4.823 4.823 0 000-9.646zm0 7.94a3.117 3.117 0 110-6.234 3.117 3.117 0 010 6.234zm6.09-8.23a1.147 1.147 0 10-2.294 0 1.147 1.147 0 002.294 0z" clip-rule="evenodd" /></svg>
+                </a>
+                <a id="pub-facebook-link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="text-gray-500 hover:text-gray-800 transition-colors">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
+                </a>
               </div>
             </div>
-            <p id="question-text" class="text-lg font-semibold text-gray-700 mb-6 min-h-[5em]"></p>
-            <div id="answer-options" class="space-y-3"></div>
+          </div>
+        </header>
+        
+        <main class="space-y-6">
+
+          <!-- Stop The Clock Game -->
+          <div class="bg-white rounded-2xl p-6 shadow-lg text-center">
+            <img src="https://cdn.prod.website-files.com/6105ed3c5ed41e814ab426cd/68fdcfeb22a54ead098fffea_stop_to_win_img.png" alt="Stop the Clock game illustration" class="mx-auto mb-4 w-24 h-auto rounded-2xl shadow-md">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Stop at 10 to Win!</h2>
+            <p class="text-gray-600 mb-6">Think you have perfect timing? Stop it bang on 10.00 and score a FREE drink!</p>
+            
+            <div class="bg-gray-100 rounded-xl p-4 my-6">
+              <p id="stop-clock-timer" class="text-6xl font-bold font-mono text-gray-800 select-none">0.00</p>
+            </div>
+            <p id="stop-clock-result" class="text-lg font-semibold mb-4 min-h-[1.5em]"></p>
+            
+            <button id="stop-clock-button" class="w-full bg-pink-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-pink-600 transition-colors active:scale-95 disabled:bg-gray-400 disabled:cursor-not-allowed">
+              Start
+            </button>
+            <button id="show-stop-clock-terms-button" class="text-xs text-gray-400 mt-4 underline hover:text-gray-600 transition-colors">Terms & Conditions apply.</button>
+          </div>
+
+          <!-- Spin Wheel Card -->
+          <div class="bg-white rounded-2xl p-6 shadow-lg text-center">
+              <img src="https://cdn.prod.website-files.com/6105ed3c5ed41e814ab426cd/68fdcfebcef49c90f3ee038f_spin_to_win_img.png" alt="Spin the Wheel game illustration" class="mx-auto mb-4 w-24 h-auto rounded-2xl shadow-md">
+              <h2 class="text-2xl font-bold text-gray-800 mb-2">Spin to Win!</h2>
+              <p class="text-gray-600 mb-6">Spin the wheel to win an instant prize!</p>
+
+              <div id="wheel-container" class="relative w-[280px] h-[280px] mx-auto mb-6">
+                  <!-- SVG Pointer -->
+                  <div class="absolute -top-1 left-1/2 -translate-x-1/2 z-20 drop-shadow-lg">
+                      <svg width="40" height="50" viewBox="0 0 40 50">
+                          <path d="M20 50 C 25 40, 25 40, 30 30 L 30 10 Q 30 0, 20 0 Q 10 0, 10 10 L 10 30 C 15 40, 15 40, 20 50 Z" fill="#b91c1c"></path>
+                          <circle cx="20" cy="15" r="5" fill="#fef2f2"></circle>
+                      </svg>
+                  </div>
+                  <!-- SVG Wheel -->
+                  <div id="wheel" class="w-full h-full transition-transform duration-[5000ms] ease-[cubic-bezier(0.1,0,0.25,1)]">
+                      <svg viewBox="0 0 200 200" class="w-full h-full rounded-full shadow-xl">
+                          <g id="wheel-segments" transform="rotate(-90 100 100)">
+                              <!-- Segments will be generated by JS -->
+                          </g>
+                          <!-- Center Hub -->
+                          <circle cx="100" cy="100" r="20" fill="white" stroke="#e5e7eb" stroke-width="4"></circle>
+                          <circle cx="100" cy="100" r="15" fill="#e5e7eb" stroke="#d1d5db" stroke-width="2"></circle>
+                      </svg>
+                  </div>
+              </div>
+
+              <button id="spin-button" class="w-full bg-purple-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-purple-700 active:scale-95 transition-all disabled:bg-gray-400 disabled:active:scale-100">
+                  Spin!
+              </button>
+              <button id="show-spin-wheel-terms-button" class="text-xs text-gray-400 mt-4 underline hover:text-gray-600 transition-colors">Terms & Conditions apply.</button>
+          </div>
+
+          <!-- Trivia Game -->
+          <div class="bg-white rounded-2xl p-6 shadow-lg">
+            <!-- Start Screen -->
+            <div id="trivia-start-screen" class="text-center">
+              <img src="https://cdn.prod.website-files.com/6105ed3c5ed41e814ab426cd/68fdcfec2f3a67bde8533ac6_trivia_img.png" alt="Weekly Trivia illustration" class="mx-auto mb-4 w-24 h-auto rounded-2xl shadow-md">
+              <h2 class="text-2xl font-bold text-gray-800 mb-2">Weekly Trivia</h2>
+              <p class="text-gray-500 mb-2">Challenge your mates to to trivia. This week's trivia theme is:</p>
+              <p id="trivia-theme" class="text-gray-800 font-semibold text-lg mb-6"></p>
+              <button id="start-trivia-button" class="w-full bg-[#004225] text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-[#00351e] transition-colors">
+                Start Trivia
+              </button>
+              <button id="show-trivia-terms-button" class="text-xs text-gray-400 mt-4 underline hover:text-gray-600 transition-colors">Terms & Conditions apply.</button>
+            </div>
+            
+            <!-- Playing Screen -->
+            <div id="trivia-playing-screen" class="hidden">
+              <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-[#004225]">Pub Trivia</h2>
+                <div class="flex items-center space-x-3">
+                  <span id="trivia-timer" class="text-sm font-mono text-gray-500">0.00s</span>
+                  <span id="question-counter" class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full"></span>
+                </div>
+              </div>
+              <p id="question-text" class="text-lg font-semibold text-gray-700 mb-6 min-h-[5em]"></p>
+              <div id="answer-options" class="space-y-3"></div>
+            </div>
+            
+            <!-- Finished Screen -->
+            <div id="trivia-finished-screen" class="hidden text-center">
+              <div class="mx-auto bg-yellow-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
+                <span class="text-4xl">Ã°Å¸â€˜Â</span>
+              </div>
+              <h2 class="text-2xl font-bold text-gray-800 mb-2">Trivia Complete!</h2>
+              <p class="text-gray-600 mb-4">You scored</p>
+              <p class="text-5xl font-bold text-[#004225] mb-1">
+                <span id="final-score"></span> <span class="text-3xl text-gray-500">/ <span id="total-questions"></span></span>
+              </p>
+              <p id="score-percentage" class="font-semibold text-yellow-500 mb-2"></p>
+              <p id="final-time-display" class="text-lg text-gray-600 mb-6"></p>
+              <button id="play-again-button" class="w-full bg-[#004225] text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-[#00351e] transition-colors">
+                Play Again
+              </button>
+            </div>
+          </div>
+
+          <!-- Birthday Club -->
+          <div id="birthday-club-card" class="bg-white rounded-2xl p-6 shadow-lg text-center">
+              <div id="birthday-initial-view">
+                  <div class="mx-auto bg-teal-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
+                      <span class="text-4xl">Ã°Å¸Å½â€š</span>
+                  </div>
+                  <h2 id="birthday-club-title" class="text-2xl font-bold text-gray-800 mb-2">Join The Birthday Club!</h2>
+                  <p id="birthday-club-description" class="text-gray-600 mb-6"></p>
+                  <form id="birthday-form" class="space-y-4">
+                      <input id="birthday-email" type="email" placeholder="Enter your email" required class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#004225] focus:border-transparent transition">
+                      <div class="text-left">
+                          <label for="birthday-month" class="text-sm font-medium text-gray-500 ml-1">Your Birthday:</label>
+                          <div class="flex space-x-3 mt-1">
+                              <!-- Custom Select Wrapper -->
+                              <div class="relative w-2/3" id="custom-month-select">
+                                  <!-- Button that acts as the select box -->
+                                  <button type="button" id="custom-month-select-button" aria-haspopup="listbox" aria-expanded="false" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#004225] focus:border-transparent transition bg-white text-left flex justify-between items-center text-gray-500">
+                                      <span id="custom-month-select-value">Month</span>
+                                      <svg id="custom-month-select-arrow" class="w-5 h-5 text-gray-400 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                      </svg>
+                                  </button>
+                                  <!-- Dropdown options panel -->
+                                  <ul id="custom-month-select-options" class="hidden absolute z-10 w-full mt-1 bg-white shadow-lg max-h-60 rounded-xl py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm" tabindex="-1" role="listbox">
+                                      <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="1">January</li>
+                                      <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="2">February</li>
+                                      <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="3">March</li>
+                                      <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="4">April</li>
+                                      <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="5">May</li>
+                                      <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="6">June</li>
+                                      <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="7">July</li>
+                                      <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="8">August</li>
+                                      <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="9">September</li>
+                                      <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="10">October</li>
+                                      <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="11">November</li>
+                                      <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="12">December</li>
+                                  </ul>
+                                  <!-- Original hidden select for form submission -->
+                                  <select id="birthday-month" name="birthday-month" required class="hidden">
+                                      <option value="" disabled selected>Month</option>
+                                      <option value="1">January</option>
+                                      <option value="2">February</option>
+                                      <option value="3">March</option>
+                                      <option value="4">April</option>
+                                      <option value="5">May</option>
+                                      <option value="6">June</option>
+                                      <option value="7">July</option>
+                                      <option value="8">August</option>
+                                      <option value="9">September</option>
+                                      <option value="10">October</option>
+                                      <option value="11">November</option>
+                                      <option value="12">December</option>
+                                  </select>
+                              </div>
+                              <!-- Day input remains the same -->
+                              <input id="birthday-day" type="number" placeholder="Day" min="1" max="31" required class="w-1/3 p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#004225] focus:border-transparent transition">
+                          </div>
+                      </div>
+                      <p id="birthday-error" class="text-red-500 text-sm h-4"></p>
+                      <button id="birthday-submit-button" type="submit" class="w-full bg-teal-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-teal-600 transition-colors flex items-center justify-center disabled:opacity-75 disabled:cursor-wait">
+                          <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" id="birthday-spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          <span id="birthday-button-text">Sign Me Up!</span>
+                      </button>
+                  </form>
+                  <button id="show-terms-button" class="text-xs text-gray-400 mt-4 underline hover:text-gray-600 transition-colors">Terms & Conditions apply.</button>
+              </div>
+              <div id="birthday-thanks-view" class="hidden">
+                  <div class="mx-auto bg-teal-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
+                      <span class="text-4xl">Ã°Å¸Å½â€°</span>
+                  </div>
+                  <h2 class="text-2xl font-bold text-gray-800 mb-2">You're all set!</h2>
+                  <p class="text-gray-600">Thanks for signing up! We'll send you a treat on your birthday week.</p>
+              </div>
           </div>
           
-          <!-- Finished Screen -->
-          <div id="trivia-finished-screen" class="hidden text-center">
-            <div class="mx-auto bg-yellow-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
-              <span class="text-4xl">👏</span>
-            </div>
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">Trivia Complete!</h2>
-            <p class="text-gray-600 mb-4">You scored</p>
-            <p class="text-5xl font-bold text-[#004225] mb-1">
-              <span id="final-score"></span> <span class="text-3xl text-gray-500">/ <span id="total-questions"></span></span>
-            </p>
-            <p id="score-percentage" class="font-semibold text-yellow-500 mb-2"></p>
-            <p id="final-time-display" class="text-lg text-gray-600 mb-6"></p>
-            <button id="play-again-button" class="w-full bg-[#004225] text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-[#00351e] transition-colors">
-              Play Again
-            </button>
-          </div>
-        </div>
-
-        <!-- Birthday Club -->
-        <div id="birthday-club-card" class="bg-white rounded-2xl p-6 shadow-lg text-center">
-            <div id="birthday-initial-view">
-                <div class="mx-auto bg-teal-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
-                    <span class="text-4xl">🎂</span>
-                </div>
-                <h2 id="birthday-club-title" class="text-2xl font-bold text-gray-800 mb-2">Join The Birthday Club!</h2>
-                <p id="birthday-club-description" class="text-gray-600 mb-6"></p>
-                <form id="birthday-form" class="space-y-4">
-                    <input id="birthday-email" type="email" placeholder="Enter your email" required class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#004225] focus:border-transparent transition">
-                    <div class="text-left">
-                        <label for="birthday-month" class="text-sm font-medium text-gray-500 ml-1">Your Birthday:</label>
-                        <div class="flex space-x-3 mt-1">
-                            <!-- Custom Select Wrapper -->
-                            <div class="relative w-2/3" id="custom-month-select">
-                                <!-- Button that acts as the select box -->
-                                <button type="button" id="custom-month-select-button" aria-haspopup="listbox" aria-expanded="false" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#004225] focus:border-transparent transition bg-white text-left flex justify-between items-center text-gray-500">
-                                    <span id="custom-month-select-value">Month</span>
-                                    <svg id="custom-month-select-arrow" class="w-5 h-5 text-gray-400 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                                <!-- Dropdown options panel -->
-                                <ul id="custom-month-select-options" class="hidden absolute z-10 w-full mt-1 bg-white shadow-lg max-h-60 rounded-xl py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm" tabindex="-1" role="listbox">
-                                    <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="1">January</li>
-                                    <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="2">February</li>
-                                    <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="3">March</li>
-                                    <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="4">April</li>
-                                    <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="5">May</li>
-                                    <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="6">June</li>
-                                    <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="7">July</li>
-                                    <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="8">August</li>
-                                    <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="9">September</li>
-                                    <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="10">October</li>
-                                    <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="11">November</li>
-                                    <li class="text-gray-900 cursor-pointer select-none relative py-2 px-4 hover:bg-teal-100" role="option" data-value="12">December</li>
-                                </ul>
-                                <!-- Original hidden select for form submission -->
-                                <select id="birthday-month" name="birthday-month" required class="hidden">
-                                    <option value="" disabled selected>Month</option>
-                                    <option value="1">January</option>
-                                    <option value="2">February</option>
-                                    <option value="3">March</option>
-                                    <option value="4">April</option>
-                                    <option value="5">May</option>
-                                    <option value="6">June</option>
-                                    <option value="7">July</option>
-                                    <option value="8">August</option>
-                                    <option value="9">September</option>
-                                    <option value="10">October</option>
-                                    <option value="11">November</option>
-                                    <option value="12">December</option>
-                                </select>
-                            </div>
-                            <!-- Day input remains the same -->
-                            <input id="birthday-day" type="number" placeholder="Day" min="1" max="31" required class="w-1/3 p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#004225] focus:border-transparent transition">
-                        </div>
-                    </div>
-                    <p id="birthday-error" class="text-red-500 text-sm h-4"></p>
-                    <button id="birthday-submit-button" type="submit" class="w-full bg-teal-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-teal-600 transition-colors flex items-center justify-center disabled:opacity-75 disabled:cursor-wait">
-                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" id="birthday-spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        <span id="birthday-button-text">Sign Me Up!</span>
-                    </button>
-                </form>
-                <button id="show-terms-button" class="text-xs text-gray-400 mt-4 underline hover:text-gray-600 transition-colors">Terms & Conditions apply.</button>
-            </div>
-            <div id="birthday-thanks-view" class="hidden">
-                <div class="mx-auto bg-teal-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
-                    <span class="text-4xl">🎉</span>
-                </div>
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">You're all set!</h2>
-                <p class="text-gray-600">Thanks for signing up! We'll send you a treat on your birthday week.</p>
-            </div>
-        </div>
-        
-        <!-- Instagram Card -->
-        <div class="bg-white rounded-2xl p-6 shadow-lg text-center">
-          <div class="mx-auto bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 text-white w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-            </svg>
-          </div>
-          <h2 class="text-2xl font-bold text-gray-800 mb-2">Join the photo wall</h2>
-          <p class="text-gray-600 mb-4">
-            Post a photo and tag <span id="pub-instagram-handle" class="font-semibold"></span> to be featured on our page.
-          </p>
-          <div class="space-y-3">
-            <button id="copy-handle-button" class="w-full flex items-center justify-center bg-gray-100 text-gray-700 font-semibold py-3 px-4 rounded-xl hover:bg-gray-200 transition-colors">
-              <span id="copy-icon-wrapper">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <rect width="13" height="13" x="9" y="9" rx="2" ry="2" />
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                </svg>
-              </span>
-              <span id="check-icon-wrapper" class="hidden">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-              </span>
-              <span id="copy-handle-text"></span>
-            </button>
-            <a id="open-instagram-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white font-bold py-3 px-4 rounded-xl shadow-md hover:opacity-90 transition-opacity">
+          <!-- Instagram Card -->
+          <div class="bg-white rounded-2xl p-6 shadow-lg text-center">
+            <div class="mx-auto bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 text-white w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
               </svg>
-              <span class="ml-2">Open Instagram</span>
-            </a>
-          </div>
-          <p class="text-xs text-gray-400 mt-4">Thanks for tagging! This helps other locals find us.</p>
-        </div>
-        
-        <!-- Google Review Card -->
-        <div id="google-review-card" class="bg-white rounded-2xl p-6 shadow-lg text-center">
-            <div class="mx-auto bg-blue-100 text-white w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Join the photo wall</h2>
+            <p class="text-gray-600 mb-4">
+              Post a photo and tag <span id="pub-instagram-handle" class="font-semibold"></span> to be featured on our page.
+            </p>
+            <div class="space-y-3">
+              <button id="copy-handle-button" class="w-full flex items-center justify-center bg-gray-100 text-gray-700 font-semibold py-3 px-4 rounded-xl hover:bg-gray-200 transition-colors">
+                <span id="copy-icon-wrapper">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <rect width="13" height="13" x="9" y="9" rx="2" ry="2" />
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                  </svg>
+                </span>
+                <span id="check-icon-wrapper" class="hidden">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </span>
+                <span id="copy-handle-text"></span>
+              </button>
+              <a id="open-instagram-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white font-bold py-3 px-4 rounded-xl shadow-md hover:opacity-90 transition-opacity">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                 </svg>
+                <span class="ml-2">Open Instagram</span>
+              </a>
             </div>
-            <h2 id="review-card-title" class="text-2xl font-bold text-gray-800 mb-2">Enjoying your time?</h2>
-            <p id="review-card-subtitle" class="text-gray-600 mb-6">Let us know how we're doing.</p>
-            
-            <a id="google-review-link" href="#" target="_blank" rel="noopener noreferrer" class="hidden"></a>
+            <p class="text-xs text-gray-400 mt-4">Thanks for tagging! This helps other locals find us.</p>
+          </div>
+          
+          <!-- Google Review Card -->
+          <div id="google-review-card" class="bg-white rounded-2xl p-6 shadow-lg text-center">
+              <div class="mx-auto bg-blue-100 text-white w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+              </div>
+              <h2 id="review-card-title" class="text-2xl font-bold text-gray-800 mb-2">Enjoying your time?</h2>
+              <p id="review-card-subtitle" class="text-gray-600 mb-6">Let us know how we're doing.</p>
+              
+              <a id="google-review-link" href="#" target="_blank" rel="noopener noreferrer" class="hidden"></a>
 
-            <div id="review-initial-state">
-                <div id="review-emoji-ratings" class="flex justify-center space-x-4">
-                    <button class="text-4xl p-2 rounded-full transition-transform transform hover:scale-125 focus:outline-none" data-sentiment="negative">😠</button>
-                    <button class="text-4xl p-2 rounded-full transition-transform transform hover:scale-125 focus:outline-none" data-sentiment="negative">😐</button>
-                    <button class="text-4xl p-2 rounded-full transition-transform transform hover:scale-125 focus:outline-none" data-sentiment="positive">😊</button>
-                    <button class="text-4xl p-2 rounded-full transition-transform transform hover:scale-125 focus:outline-none" data-sentiment="positive">😍</button>
-                </div>
-            </div>
+              <div id="review-initial-state">
+                  <div id="review-emoji-ratings" class="flex justify-center space-x-4">
+                      <button class="text-4xl p-2 rounded-full transition-transform transform hover:scale-125 focus:outline-none" data-sentiment="negative">Ã°Å¸ËœÂ </button>
+                      <button class="text-4xl p-2 rounded-full transition-transform transform hover:scale-125 focus:outline-none" data-sentiment="negative">Ã°Å¸ËœÂ</button>
+                      <button class="text-4xl p-2 rounded-full transition-transform transform hover:scale-125 focus:outline-none" data-sentiment="positive">Ã°Å¸ËœÅ </button>
+                      <button class="text-4xl p-2 rounded-full transition-transform transform hover:scale-125 focus:outline-none" data-sentiment="positive">Ã°Å¸ËœÂ</button>
+                  </div>
+              </div>
 
-            <form id="review-feedback-form" name="venue-feedback" method="POST" data-netlify="true" class="hidden">
-                <input type="hidden" name="form-name" id="review-feedback-form-name-input" value="venue-feedback" />
-                <textarea id="review-feedback-textarea" name="feedback" rows="3" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#004225] focus:border-transparent transition" placeholder="Tell us more..."></textarea>
-                <button id="review-submit-feedback-button" type="submit" class="mt-4 w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-blue-600 transition-colors">
-                    Submit Feedback
-                </button>
-            </form>
+              <form id="review-feedback-form" name="venue-feedback" method="POST" data-netlify="true" class="hidden">
+                  <input type="hidden" name="form-name" id="review-feedback-form-name-input" value="venue-feedback" />
+                  <textarea id="review-feedback-textarea" name="feedback" rows="3" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#004225] focus:border-transparent transition" placeholder="Tell us more..."></textarea>
+                  <button id="review-submit-feedback-button" type="submit" class="mt-4 w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-blue-600 transition-colors">
+                      Submit Feedback
+                  </button>
+              </form>
 
-            <div id="review-feedback-thanks" class="hidden">
-                <p class="text-xl font-semibold text-green-600">Thanks for your feedback!</p>
-            </div>
-        </div>
+              <div id="review-feedback-thanks" class="hidden">
+                  <p class="text-xl font-semibold text-green-600">Thanks for your feedback!</p>
+              </div>
+          </div>
+          
+        </main>
         
-      </main>
-      
-      <!-- Footer -->
-      <footer class="text-center py-4">
-        <p class="text-sm text-gray-500">
-          Powered by <span class="font-bold text-[#004225]">CoasterHub</span>
-        </p>
-      </footer>
-      
-    </div>
+        <!-- Footer -->
+        <footer class="text-center py-4">
+          <p class="text-sm text-gray-500">
+            Powered by <span class="font-bold text-[#004225]">CoasterHub</span>
+          </p>
+        </footer>
+        
+      </div>
 
-    <!-- Spin Wheel Prize Modal -->
-    <div id="prize-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl p-8 shadow-2xl text-center max-w-sm w-full relative">
-            
-            <!-- Initial Prize View -->
-            <div id="prize-initial-view">
-                <h2 class="text-3xl font-bold text-purple-600 mb-2">Congratulations!</h2>
-                <p class="text-gray-600 mb-4">You've won:</p>
-                <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl py-4 px-2 mb-6">
-                    <p id="prize-won" class="text-2xl font-bold text-gray-800"></p>
-                </div>
-                <p class="text-sm text-gray-500 mb-6">Show this screen to staff to claim your prize.</p>
-                <div class="space-y-3">
-                    <button id="redeem-now-button" class="w-full bg-purple-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-purple-700 transition-colors">
-                        Redeem Now
-                    </button>
-                    <button id="redeem-later-button" class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
-                        Redeem Later
-                    </button>
-                </div>
-                <div class="text-xs text-gray-400 mt-4 text-center">
-                    <p id="prize-expiry" class="font-semibold"></p>
-                </div>
-            </div>
+      <!-- Spin Wheel Prize Modal -->
+      <div id="prize-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
+          <div class="bg-white rounded-2xl p-8 shadow-2xl text-center max-w-sm w-full relative">
+              
+              <!-- Initial Prize View -->
+              <div id="prize-initial-view">
+                  <h2 class="text-3xl font-bold text-purple-600 mb-2">Congratulations!</h2>
+                  <p class="text-gray-600 mb-4">You've won:</p>
+                  <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl py-4 px-2 mb-6">
+                      <p id="prize-won" class="text-2xl font-bold text-gray-800"></p>
+                  </div>
+                  <p class="text-sm text-gray-500 mb-6">Show this screen to staff to claim your prize.</p>
+                  <div class="space-y-3">
+                      <button id="redeem-now-button" class="w-full bg-purple-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-purple-700 transition-colors">
+                          Redeem Now
+                      </button>
+                      <button id="redeem-later-button" class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
+                          Redeem Later
+                      </button>
+                  </div>
+                  <div class="text-xs text-gray-400 mt-4 text-center">
+                      <p id="prize-expiry" class="font-semibold"></p>
+                  </div>
+              </div>
 
-            <!-- Confirmation View -->
-            <div id="prize-confirmation-view" class="hidden">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Before your proceed</h2>
-                <p class="text-gray-600 mb-6">Have you shown this screen to a staff member? This prize can only be redeemed once.</p>
-                <div class="space-y-3">
-                    <button id="confirm-redemption-button" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-green-700 transition-colors">
-                        Yes, redeem now.
-                    </button>
-                    <button id="cancel-redemption-button" class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
-                        I'm not ready to redeem yet.
-                    </button>
-                </div>
-            </div>
+              <!-- Confirmation View -->
+              <div id="prize-confirmation-view" class="hidden">
+                  <h2 class="text-2xl font-bold text-gray-800 mb-4">Before your proceed</h2>
+                  <p class="text-gray-600 mb-6">Have you shown this screen to a staff member? This prize can only be redeemed once.</p>
+                  <div class="space-y-3">
+                      <button id="confirm-redemption-button" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-green-700 transition-colors">
+                          Yes, redeem now.
+                      </button>
+                      <button id="cancel-redemption-button" class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
+                          I'm not ready to redeem yet.
+                      </button>
+                  </div>
+              </div>
 
-            <!-- Redeemed View -->
-            <div id="prize-redeemed-view" class="hidden">
-                <div class="mx-auto bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                    <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                </div>
-                <h2 class="text-3xl font-bold text-green-600 mb-2">Success!</h2>
-                <p class="text-gray-600">Your prize has been redeemed.</p>
-            </div>
-        </div>
-    </div>
+              <!-- Redeemed View -->
+              <div id="prize-redeemed-view" class="hidden">
+                  <div class="mx-auto bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                      <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <h2 class="text-3xl font-bold text-green-600 mb-2">Success!</h2>
+                  <p class="text-gray-600">Your prize has been redeemed.</p>
+              </div>
+          </div>
+      </div>
 
-    <!-- Stop The Clock Prize Modal -->
-    <div id="stop-clock-prize-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl p-8 shadow-2xl text-center max-w-sm w-full relative">
-            <!-- Initial Prize View -->
-            <div id="stop-clock-prize-initial-view">
-                <h2 class="text-3xl font-bold text-pink-500 mb-2">You're a Winner!</h2>
-                <p class="text-gray-600 mb-4">You've won:</p>
-                <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl py-4 px-2 mb-6">
-                    <p id="stop-clock-prize-won" class="text-2xl font-bold text-gray-800"></p>
-                </div>
-                <p class="text-sm text-gray-500 mb-6">Show this screen to staff to claim your prize.</p>
-                <div class="space-y-3">
-                    <button id="stop-clock-redeem-now-button" class="w-full bg-pink-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-pink-600 transition-colors">
-                        Redeem Now
-                    </button>
-                    <button id="stop-clock-redeem-later-button" class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
-                        Redeem Later
-                    </button>
-                </div>
-                <div class="text-xs text-gray-400 mt-4 text-center">
-                    <p id="stop-clock-prize-expiry" class="font-semibold"></p>
-                </div>
-            </div>
+      <!-- Stop The Clock Prize Modal -->
+      <div id="stop-clock-prize-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
+          <div class="bg-white rounded-2xl p-8 shadow-2xl text-center max-w-sm w-full relative">
+              <!-- Initial Prize View -->
+              <div id="stop-clock-prize-initial-view">
+                  <h2 class="text-3xl font-bold text-pink-500 mb-2">You're a Winner!</h2>
+                  <p class="text-gray-600 mb-4">You've won:</p>
+                  <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl py-4 px-2 mb-6">
+                      <p id="stop-clock-prize-won" class="text-2xl font-bold text-gray-800"></p>
+                  </div>
+                  <p class="text-sm text-gray-500 mb-6">Show this screen to staff to claim your prize.</p>
+                  <div class="space-y-3">
+                      <button id="stop-clock-redeem-now-button" class="w-full bg-pink-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-pink-600 transition-colors">
+                          Redeem Now
+                      </button>
+                      <button id="stop-clock-redeem-later-button" class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
+                          Redeem Later
+                      </button>
+                  </div>
+                  <div class="text-xs text-gray-400 mt-4 text-center">
+                      <p id="stop-clock-prize-expiry" class="font-semibold"></p>
+                  </div>
+              </div>
 
-            <!-- Confirmation View -->
-            <div id="stop-clock-prize-confirmation-view" class="hidden">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Confirm Redemption</h2>
-                <p class="text-gray-600 mb-6">Have you shown this screen to a staff member? This prize can only be redeemed once.</p>
-                <div class="space-y-3">
-                    <button id="stop-clock-confirm-redemption-button" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-green-700 transition-colors">
-                        Yes, redeem now
-                    </button>
-                    <button id="stop-clock-cancel-redemption-button" class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
-                        Cancel
-                    </button>
-                </div>
-            </div>
+              <!-- Confirmation View -->
+              <div id="stop-clock-prize-confirmation-view" class="hidden">
+                  <h2 class="text-2xl font-bold text-gray-800 mb-4">Confirm Redemption</h2>
+                  <p class="text-gray-600 mb-6">Have you shown this screen to a staff member? This prize can only be redeemed once.</p>
+                  <div class="space-y-3">
+                      <button id="stop-clock-confirm-redemption-button" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-green-700 transition-colors">
+                          Yes, redeem now
+                      </button>
+                      <button id="stop-clock-cancel-redemption-button" class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
+                          Cancel
+                      </button>
+                  </div>
+              </div>
 
-            <!-- Redeemed View -->
-            <div id="stop-clock-prize-redeemed-view" class="hidden">
-                <div class="mx-auto bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                    <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                </div>
-                <h2 class="text-3xl font-bold text-green-600 mb-2">Success!</h2>
-                <p class="text-gray-600">Your prize has been redeemed.</p>
-            </div>
-        </div>
-    </div>
+              <!-- Redeemed View -->
+              <div id="stop-clock-prize-redeemed-view" class="hidden">
+                  <div class="mx-auto bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                      <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <h2 class="text-3xl font-bold text-green-600 mb-2">Success!</h2>
+                  <p class="text-gray-600">Your prize has been redeemed.</p>
+              </div>
+          </div>
+      </div>
 
-    <!-- Birthday Club Terms & Conditions Modal -->
-    <div id="terms-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl p-8 shadow-2xl text-left max-w-sm w-full relative">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Birthday Club Terms</h2>
-            <div class="space-y-3 text-sm text-gray-600">
-                <p><span class="font-semibold">Offer:</span> Limited to one free drink per person, per year during their birthday week.</p>
-                <p><span class="font-semibold">Eligible Drinks:</span> The offer is valid for house beer, cider, house wine, or soft drink.</p>
-                <p><span class="font-semibold">Serving Size:</span> Beer/cider is a schooner. Wine is a standard 150ml glass.</p>
-                <p><span class="font-semibold">Redemption:</span> A valid ID must be shown to verify your date of birth. This offer cannot be exchanged for cash and is not valid with other promotions.</p>
-            </div>
-            <button id="close-terms-button" class="mt-6 w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
-                Close
-            </button>
-        </div>
-    </div>
+      <!-- Birthday Club Terms & Conditions Modal -->
+      <div id="terms-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
+          <div class="bg-white rounded-2xl p-8 shadow-2xl text-left max-w-sm w-full relative">
+              <h2 class="text-2xl font-bold text-gray-800 mb-4">Birthday Club Terms</h2>
+              <div class="space-y-3 text-sm text-gray-600">
+                  <p><span class="font-semibold">Offer:</span> Limited to one free drink per person, per year during their birthday week.</p>
+                  <p><span class="font-semibold">Eligible Drinks:</span> The offer is valid for house beer, cider, house wine, or soft drink.</p>
+                  <p><span class="font-semibold">Serving Size:</span> Beer/cider is a schooner. Wine is a standard 150ml glass.</p>
+                  <p><span class="font-semibold">Redemption:</span> A valid ID must be shown to verify your date of birth. This offer cannot be exchanged for cash and is not valid with other promotions.</p>
+              </div>
+              <button id="close-terms-button" class="mt-6 w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
+                  Close
+              </button>
+          </div>
+      </div>
 
-    <!-- Stop The Clock Terms Modal -->
-    <div id="stop-clock-terms-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl p-8 shadow-2xl text-left max-w-sm w-full relative">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Stop The Clock Terms</h2>
-            <div class="space-y-3 text-sm text-gray-600">
-                <p><span class="font-semibold">Prize:</span> One free pot of house beer or soft drink for stopping the clock at exactly 10.00 seconds.</p>
-                <p><span class="font-semibold">Limits:</span> Limited to one win per person every 2 hours.</p>
-                <p><span class="font-semibold">Redemption:</span> Prize must be redeemed on the same day. This offer cannot be exchanged for cash.</p>
-            </div>
-            <button id="close-stop-clock-terms-button" class="mt-6 w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
-                Close
-            </button>
-        </div>
-    </div>
+      <!-- Stop The Clock Terms Modal -->
+      <div id="stop-clock-terms-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
+          <div class="bg-white rounded-2xl p-8 shadow-2xl text-left max-w-sm w-full relative">
+              <h2 class="text-2xl font-bold text-gray-800 mb-4">Stop The Clock Terms</h2>
+              <div class="space-y-3 text-sm text-gray-600">
+                  <p><span class="font-semibold">Prize:</span> One free pot of house beer or soft drink for stopping the clock at exactly 10.00 seconds.</p>
+                  <p><span class="font-semibold">Limits:</span> Limited to one win per person every 2 hours.</p>
+                  <p><span class="font-semibold">Redemption:</span> Prize must be redeemed on the same day. This offer cannot be exchanged for cash.</p>
+              </div>
+              <button id="close-stop-clock-terms-button" class="mt-6 w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
+                  Close
+              </button>
+          </div>
+      </div>
 
-    <!-- Spin Wheel Terms Modal -->
-    <div id="spin-wheel-terms-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl p-8 shadow-2xl text-left max-w-sm w-full relative">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Spin To Win Terms</h2>
-            <div class="space-y-3 text-sm text-gray-600">
-                <p><span class="font-semibold">Prizes:</span> As stated on the wheel segment you land on.</p>
-                <p><span class="font-semibold">Limits:</span> Limited to one spin per person every 2 hours.</p>
-                <p><span class="font-semibold">Redemption:</span> Prize must be redeemed on the same day. This offer cannot be exchanged for cash and is not valid with other promotions.</p>
-            </div>
-            <button id="close-spin-wheel-terms-button" class="mt-6 w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
-                Close
-            </button>
-        </div>
-    </div>
+      <!-- Spin Wheel Terms Modal -->
+      <div id="spin-wheel-terms-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
+          <div class="bg-white rounded-2xl p-8 shadow-2xl text-left max-w-sm w-full relative">
+              <h2 class="text-2xl font-bold text-gray-800 mb-4">Spin To Win Terms</h2>
+              <div class="space-y-3 text-sm text-gray-600">
+                  <p><span class="font-semibold">Prizes:</span> As stated on the wheel segment you land on.</p>
+                  <p><span class="font-semibold">Limits:</span> Limited to one spin per person every 2 hours.</p>
+                  <p><span class="font-semibold">Redemption:</span> Prize must be redeemed on the same day. This offer cannot be exchanged for cash and is not valid with other promotions.</p>
+              </div>
+              <button id="close-spin-wheel-terms-button" class="mt-6 w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
+                  Close
+              </button>
+          </div>
+      </div>
 
-    <!-- Trivia Terms Modal -->
-    <div id="trivia-terms-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl p-8 shadow-2xl text-left max-w-sm w-full relative">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Trivia Terms</h2>
-            <div class="space-y-3 text-sm text-gray-600">
-                <p>The weekly trivia is for entertainment purposes only.</p>
-                <p>No prize is awarded for participation or for achieving a high score.</p>
-                <p>Challenge your friends and have fun!</p>
-            </div>
-            <button id="close-trivia-terms-button" class="mt-6 w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
-                Close
-            </button>
-        </div>
-    </div>
+      <!-- Trivia Terms Modal -->
+      <div id="trivia-terms-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
+          <div class="bg-white rounded-2xl p-8 shadow-2xl text-left max-w-sm w-full relative">
+              <h2 class="text-2xl font-bold text-gray-800 mb-4">Trivia Terms</h2>
+              <div class="space-y-3 text-sm text-gray-600">
+                  <p>The weekly trivia is for entertainment purposes only.</p>
+                  <p>No prize is awarded for participation or for achieving a high score.</p>
+                  <p>Challenge your friends and have fun!</p>
+              </div>
+              <button id="close-trivia-terms-button" class="mt-6 w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
+                  Close
+              </button>
+          </div>
+      </div>
 
 
-<script src="./index.js" defer></script>
+  <script src="./index.js" defer></script>
 
-  </body>
-</html>
+    </body>
+  </html>
