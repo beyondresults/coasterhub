@@ -146,11 +146,48 @@
               <h2 class="text-2xl font-bold text-gray-800 mb-2">Trivia Complete!</h2>
               <p class="text-gray-600 mb-4">You scored</p>
               <p class="text-5xl font-bold text-[#004225] mb-1">
-                <span id="final-score"></span> <span class="text-3xl text-gray-500">/ <span id="total-questions"></span></span>
+                <span id="final-score"></span>
+                <span class="text-3xl text-gray-500">
+                  /
+                  <span id="total-questions"></span>
+                </span>
               </p>
               <p id="score-percentage" class="font-semibold text-yellow-500 mb-2"></p>
               <p id="final-time-display" class="text-lg text-gray-600 mb-6"></p>
-              <button id="play-again-button" class="w-full bg-[#004225] text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-[#00351e] transition-colors">
+
+              <div class="space-y-3 text-left">
+                <label for="trivia-player-name" class="block text-sm font-semibold text-gray-600">
+                  Add your name to this week&apos;s leaderboard
+                </label>
+                <input
+                  id="trivia-player-name"
+                  type="text"
+                  maxlength="60"
+                  placeholder="Your name"
+                  autocomplete="off"
+                  class="w-full rounded-xl border border-gray-300 px-4 py-3 text-base focus:border-[#004225] focus:outline-none focus:ring-2 focus:ring-[#004225]"
+                />
+                <button
+                  id="view-scoreboard-button"
+                  class="w-full bg-[#004225] text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-[#00351e] transition-colors disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none"
+                  disabled
+                >
+                  View scoreboard
+                </button>
+                <p class="text-xs text-gray-400">
+                  We&apos;ll display only the name you enter here.
+                </p>
+              </div>
+
+              <div id="trivia-scoreboard" class="mt-6 hidden text-left">
+                <p id="trivia-leaderboard-message" class="text-sm text-gray-500 mb-3"></p>
+                <ol id="trivia-leaderboard-list" class="space-y-2"></ol>
+              </div>
+
+              <button
+                id="play-again-button"
+                class="mt-6 w-full bg-[#004225] text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-[#00351e] transition-colors"
+              >
                 Play Again
               </button>
             </div>
