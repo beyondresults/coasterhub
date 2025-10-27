@@ -33,6 +33,9 @@ let stopClockCooldownInterval;
 // Trivia game state
 let triviaTimerInterval = null;
 let triviaStartTime = 0;
+let triviaDurationMs = 0;
+let triviaScoreSubmitted = false;
+let lastSubmittedPlayerName = '';
 
 
 // --- DOM ELEMENTS ---
@@ -111,6 +114,11 @@ const triviaTermsModal = document.getElementById('trivia-terms-modal');
 const closeTriviaTermsButton = document.getElementById('close-trivia-terms-button');
 const triviaTimer = document.getElementById('trivia-timer');
 const finalTimeDisplay = document.getElementById('final-time-display');
+const triviaPlayerNameInput = document.getElementById('trivia-player-name');
+const viewScoreboardButton = document.getElementById('view-scoreboard-button');
+const triviaScoreboardContainer = document.getElementById('trivia-scoreboard');
+const triviaLeaderboardList = document.getElementById('trivia-leaderboard-list');
+const triviaLeaderboardMessage = document.getElementById('trivia-leaderboard-message');
 const triviaTheme = document.getElementById('trivia-theme');
 
 // Review/Feedback Card
@@ -643,6 +651,7 @@ function selectAnswer(selectedOption, correctAnswer, buttonElement) {
 function startGame() {
   currentQuestionIndex = 0;
   score = 0;
+  resetTriviaScoreboardState();
   triviaStartScreen.classList.add('hidden');
   triviaFinishedScreen.classList.add('hidden');
   triviaPlayingScreen.classList.remove('hidden');
@@ -660,7 +669,8 @@ function startGame() {
 
 function endGame() {
   clearInterval(triviaTimerInterval);
-  const finalTime = ((Date.now() - triviaStartTime) / 1000).toFixed(2);
+  triviaDurationMs = Math.max(0, Date.now() - triviaStartTime);
+  const finalTime = (triviaDurationMs / 1000).toFixed(2);
   const totalQuestionCount = GLOBAL_DATA.trivia.questions.length;
   const percentage = Math.round((score / totalQuestionCount) * 100);
 
@@ -671,12 +681,253 @@ function endGame() {
 
   triviaPlayingScreen.classList.add('hidden');
   triviaFinishedScreen.classList.remove('hidden');
+  handleTriviaNameInput();
+
+  if (triviaPlayerNameInput) {
+    triviaPlayerNameInput.focus({ preventScroll: true });
+  }
 }
 
 function restartGame() {
     if (triviaTimerInterval) clearInterval(triviaTimerInterval);
+    resetTriviaScoreboardState();
     triviaFinishedScreen.classList.add('hidden');
     triviaStartScreen.classList.remove('hidden');
+}
+
+// --- TRIVIA LEADERBOARD FUNCTIONS ---
+function formatSecondsFromMs(ms) {
+  if (!Number.isFinite(ms) || ms < 0) {
+    return '—';
+  }
+  return `${(ms / 1000).toFixed(2)}s`;
+}
+
+function resetTriviaScoreboardUI() {
+  if (triviaPlayerNameInput) {
+    triviaPlayerNameInput.value = '';
+    triviaPlayerNameInput.disabled = false;
+    triviaPlayerNameInput.classList.remove('bg-gray-100', 'cursor-not-allowed', 'text-gray-500');
+  }
+
+  if (viewScoreboardButton) {
+    viewScoreboardButton.disabled = true;
+    viewScoreboardButton.textContent = 'View scoreboard';
+    delete viewScoreboardButton.dataset.loading;
+  }
+
+  if (triviaLeaderboardMessage) {
+    triviaLeaderboardMessage.textContent = '';
+  }
+
+  if (triviaLeaderboardList) {
+    triviaLeaderboardList.innerHTML = '';
+  }
+
+  if (triviaScoreboardContainer) {
+    triviaScoreboardContainer.classList.add('hidden');
+  }
+}
+
+function resetTriviaScoreboardState() {
+  triviaDurationMs = 0;
+  triviaScoreSubmitted = false;
+  lastSubmittedPlayerName = '';
+  resetTriviaScoreboardUI();
+}
+
+function handleTriviaNameInput() {
+  if (!triviaPlayerNameInput || !viewScoreboardButton) {
+    return;
+  }
+
+  const hasName = triviaPlayerNameInput.value.trim().length > 0;
+  viewScoreboardButton.disabled = !hasName;
+}
+
+async function submitTriviaScore(playerName) {
+  const payload = {
+    pubId: currentVenueId,
+    playerName,
+    score,
+    timeMs: triviaDurationMs
+  };
+
+  if (!payload.pubId) {
+    throw new Error('Missing venue identifier.');
+  }
+
+  if (!Number.isFinite(payload.score)) {
+    throw new Error('Missing score value.');
+  }
+
+  if (!Number.isFinite(payload.timeMs)) {
+    throw new Error('Missing time value.');
+  }
+
+  const response = await fetch('/.netlify/functions/submit-trivia-score', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.error || 'Unable to submit score.');
+  }
+}
+
+function renderTriviaLeaderboard(items, highlight) {
+  if (!triviaLeaderboardList) {
+    return;
+  }
+
+  triviaLeaderboardList.innerHTML = '';
+
+  if (!items.length) {
+    if (triviaLeaderboardMessage) {
+      triviaLeaderboardMessage.textContent = 'No scores yet. Be the first to play!';
+    }
+    return;
+  }
+
+  if (triviaLeaderboardMessage) {
+    triviaLeaderboardMessage.textContent = 'Top players this week';
+  }
+
+  const shouldHighlight =
+    highlight &&
+    typeof highlight.playerName === 'string' &&
+    highlight.playerName.length > 0;
+
+  items.forEach((item, index) => {
+    const li = document.createElement('li');
+    const isHighlight =
+      shouldHighlight &&
+      item.playerName === highlight.playerName &&
+      item.score === highlight.score &&
+      item.timeMs === highlight.timeMs;
+
+    li.className = [
+      'flex items-center justify-between rounded-xl px-4 py-3 bg-gray-100',
+      isHighlight ? 'border border-[#004225] bg-[#E8F5EE]' : ''
+    ]
+      .filter(Boolean)
+      .join(' ');
+
+    li.innerHTML = `
+      <div class="flex items-baseline space-x-3">
+        <span class="text-sm font-semibold text-gray-500">${index + 1}.</span>
+        <span class="text-lg font-semibold text-gray-800">${item.playerName || 'Player'}</span>
+      </div>
+      <div class="text-right text-sm text-gray-600">
+        <p class="font-semibold text-gray-700">${item.score} correct</p>
+        <p class="text-xs text-gray-500">${formatSecondsFromMs(item.timeMs)}</p>
+      </div>
+    `;
+
+    triviaLeaderboardList.appendChild(li);
+  });
+}
+
+async function loadTriviaLeaderboard({ reveal = false, highlightSubmission = false } = {}) {
+  if (!currentVenueId) {
+    throw new Error('Missing venue identifier.');
+  }
+
+  if (reveal && triviaScoreboardContainer) {
+    triviaScoreboardContainer.classList.remove('hidden');
+  }
+
+  if (triviaLeaderboardMessage) {
+    triviaLeaderboardMessage.textContent = 'Loading scoreboard...';
+  }
+
+  const query = new URLSearchParams({
+    pubId: currentVenueId,
+    limit: '20'
+  });
+
+  const response = await fetch(
+    `/.netlify/functions/get-trivia-leaderboard?${query.toString()}`
+  );
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.error || 'Unable to load leaderboard.');
+  }
+
+  const data = await response.json();
+  const items = Array.isArray(data.items) ? data.items : [];
+
+  renderTriviaLeaderboard(
+    items,
+    highlightSubmission
+      ? {
+          playerName: lastSubmittedPlayerName,
+          score,
+          timeMs: triviaDurationMs
+        }
+      : null
+  );
+
+  if (triviaScoreboardContainer) {
+    triviaScoreboardContainer.classList.remove('hidden');
+  }
+}
+
+async function handleViewScoreboardClick() {
+  if (!triviaPlayerNameInput || !viewScoreboardButton) {
+    return;
+  }
+
+  const isLoading = viewScoreboardButton.dataset.loading === 'true';
+  if (isLoading) {
+    return;
+  }
+
+  const playerName = triviaPlayerNameInput.value.trim();
+  if (!playerName) {
+    return;
+  }
+
+  viewScoreboardButton.dataset.loading = 'true';
+  viewScoreboardButton.disabled = true;
+  viewScoreboardButton.textContent = triviaScoreSubmitted
+    ? 'Refreshing...'
+    : 'Submitting...';
+
+  if (triviaLeaderboardMessage) {
+    triviaLeaderboardMessage.textContent = 'Loading scoreboard...';
+  }
+
+  try {
+    if (!triviaScoreSubmitted) {
+      await submitTriviaScore(playerName);
+      triviaScoreSubmitted = true;
+      lastSubmittedPlayerName = playerName;
+
+      triviaPlayerNameInput.disabled = true;
+      triviaPlayerNameInput.classList.add('bg-gray-100', 'cursor-not-allowed', 'text-gray-500');
+    }
+
+    await loadTriviaLeaderboard({
+      reveal: true,
+      highlightSubmission: true
+    });
+
+    viewScoreboardButton.textContent = 'Refresh scoreboard';
+  } catch (error) {
+    console.error('Trivia scoreboard error:', error);
+    viewScoreboardButton.textContent = 'View scoreboard';
+    if (triviaLeaderboardMessage) {
+      triviaLeaderboardMessage.textContent =
+        'Sorry, we could not update the scoreboard. Please try again.';
+    }
+  } finally {
+    viewScoreboardButton.disabled = false;
+    viewScoreboardButton.dataset.loading = 'false';
+  }
 }
 
 // --- FEEDBACK & BIRTHDAY FUNCTIONS ---
@@ -1100,6 +1351,15 @@ async function init() {
     copyHandleButton.addEventListener('click', copyHandleToClipboard);
     startTriviaButton.addEventListener('click', startGame);
     playAgainButton.addEventListener('click', restartGame);
+
+    if (triviaPlayerNameInput && viewScoreboardButton) {
+        triviaPlayerNameInput.addEventListener('input', handleTriviaNameInput);
+        viewScoreboardButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            handleViewScoreboardClick();
+        });
+        resetTriviaScoreboardState();
+    }
 
     reviewEmojiButtons.forEach(button => button.addEventListener('click', handleReviewEmojiClick));
     reviewFeedbackForm.addEventListener('submit', handleFeedbackSubmit);
