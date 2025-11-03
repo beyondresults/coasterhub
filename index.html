@@ -115,6 +115,35 @@
           transform: translateX(200%);
         }
       }
+
+      .coupon-card {
+        position: relative;
+        background: linear-gradient(135deg, #fff7f3 0%, #ffe8e0 100%);
+        border-radius: 20px;
+        border: 2px dashed rgba(185, 28, 28, 0.35);
+        overflow: hidden;
+      }
+
+      .coupon-card::before,
+      .coupon-card::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #ffffff;
+        transform: translateY(-50%);
+        pointer-events: none;
+      }
+
+      .coupon-card::before {
+        left: -16px;
+      }
+
+      .coupon-card::after {
+        right: -16px;
+      }
       </style>
     <script type="importmap">
   {
@@ -460,7 +489,7 @@
               <div id="prize-initial-view">
                   <h2 class="text-3xl font-bold text-red-600 mb-2">Congratulations!</h2>
                   <p class="text-gray-600 mb-4">You've won:</p>
-                  <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl py-4 px-2 mb-6">
+                  <div class="coupon-card py-4 px-2 mb-6">
                       <p id="prize-won" class="text-2xl font-bold text-gray-800"></p>
                   </div>
                   <p class="text-sm text-gray-500 mb-6">Show this screen to staff to claim your prize</p>
@@ -509,7 +538,7 @@
               <div id="stop-clock-prize-initial-view">
                   <h2 class="text-3xl font-bold text-pink-500 mb-2">You're a Winner!</h2>
                   <p class="text-gray-600 mb-4">You've won:</p>
-                  <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl py-4 px-2 mb-6">
+                  <div class="coupon-card py-4 px-2 mb-6">
                       <p id="stop-clock-prize-won" class="text-2xl font-bold text-gray-800"></p>
                   </div>
                   <p class="text-sm text-gray-500 mb-6">Show this screen to staff to claim your prize.</p>
