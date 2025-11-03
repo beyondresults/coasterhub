@@ -363,7 +363,7 @@ function stopStopClock() {
         stopClockResult.classList.add('text-gray-700');
         stopClockResult.classList.remove('text-green-600');
         stopClockButton.textContent = 'Play Again';
-        stopClockButton.classList.remove('bg-red-500', 'hover:bg-red-600');
+        stopClockButton.classList.remove('bg-slate-900', 'hover:bg-slate-800');
         stopClockButton.classList.add('bg-gray-500', 'hover:bg-gray-600');
         stopClockGameState = 'stopped';
     }
