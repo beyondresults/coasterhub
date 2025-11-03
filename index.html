@@ -26,13 +26,22 @@
         font-size: 5.5rem;
         line-height: 1;
         color: #ff1a1a;
-        letter-spacing: 3px;
         text-shadow: 0 0 12px rgba(255, 26, 26, 0.6);
-        font-variant-numeric: tabular-nums;
-        font-feature-settings: 'tnum';
-        display: inline-block;
-        min-width: 7ch;
-        text-align: center;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35ch;
+        min-width: 8ch;
+      }
+
+      #stop-clock-timer span {
+        display: inline-flex;
+        justify-content: center;
+        width: 1.4ch;
+      }
+
+      #stop-clock-timer span[data-char="."] {
+        width: 0.8ch;
       }
       </style>
     <script type="importmap">
