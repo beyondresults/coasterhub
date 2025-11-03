@@ -364,7 +364,7 @@
         
         <!-- Footer -->
         <footer class="text-center py-4">
-          <p class="text-sm text-gray-800 flex items-center justify-center gap-2">
+          <p class="text-sm text-gray-500 flex items-center justify-center gap-3">
             <span class="lowercase">powered by</span>
             <img src="https://cdn.prod.website-files.com/6105ed3c5ed41e814ab426cd/690916718681773d7e063358_taple.png" alt="Taple" class="h-5 w-auto">
           </p>
@@ -471,64 +471,97 @@
           </div>
       </div>
 
-      <!-- Birthday Club Terms & Conditions Modal -->
+      <!-- Terms & Conditions Modal -->
       <div id="terms-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
-          <div class="bg-white rounded-2xl p-8 shadow-2xl text-left max-w-sm w-full relative">
-              <h2 class="text-2xl font-bold text-gray-800 mb-4">Birthday Club Terms</h2>
-              <div class="space-y-3 text-sm text-gray-600">
-                  <p><span class="font-semibold">Offer:</span> Limited to one free drink per person, per year during their birthday week.</p>
-                  <p><span class="font-semibold">Eligible Drinks:</span> The offer is valid for house beer, cider, house wine, or soft drink.</p>
-                  <p><span class="font-semibold">Serving Size:</span> Beer/cider is a schooner. Wine is a standard 150ml glass.</p>
-                  <p><span class="font-semibold">Redemption:</span> A valid ID must be shown to verify your date of birth. This offer cannot be exchanged for cash and is not valid with other promotions.</p>
+          <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[85vh] overflow-hidden">
+              <div class="flex items-start justify-between px-6 pt-6">
+                  <h2 class="text-2xl font-bold text-gray-800">Taple Terms &amp; Conditions</h2>
+                  <button id="close-terms-button" class="text-gray-400 hover:text-gray-600 transition-colors text-2xl leading-none">
+                      <span aria-hidden="true">&times;</span>
+                      <span class="sr-only">Close Terms &amp; Conditions</span>
+                  </button>
               </div>
-              <button id="close-terms-button" class="mt-6 w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
-                  Close
-              </button>
-          </div>
-      </div>
+              <div class="px-6 pb-6">
+                  <div class="max-h-[65vh] overflow-y-auto pr-2 text-sm text-gray-600 space-y-5 leading-relaxed">
+                      <section class="space-y-3">
+                          <h3 class="font-semibold text-gray-800 text-lg">1. Eligibility</h3>
+                          <p>1.1. Entry is free and open to all patrons of participating venues.</p>
+                          <p>1.2. Individuals under 18 years of age may participate in Taple games; however, only persons aged 18 or over are eligible to claim alcoholic beverage prizes.</p>
+                          <p>1.3. By participating, entrants agree to be bound by these Terms &amp; Conditions (“T&amp;Cs”).</p>
+                      </section>
 
-      <!-- Stop The Clock Terms Modal -->
-      <div id="stop-clock-terms-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
-          <div class="bg-white rounded-2xl p-8 shadow-2xl text-left max-w-sm w-full relative">
-              <h2 class="text-2xl font-bold text-gray-800 mb-4">Stop The Clock Terms</h2>
-              <div class="space-y-3 text-sm text-gray-600">
-                  <p><span class="font-semibold">Prize:</span> One free pot of house beer or soft drink for stopping the clock at exactly 10.00 seconds.</p>
-                  <p><span class="font-semibold">Limits:</span> Limited to one win per person every 2 hours.</p>
-                  <p><span class="font-semibold">Redemption:</span> Prize must be redeemed on the same day. This offer cannot be exchanged for cash.</p>
-              </div>
-              <button id="close-stop-clock-terms-button" class="mt-6 w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
-                  Close
-              </button>
-          </div>
-      </div>
+                      <section class="space-y-3">
+                          <h3 class="font-semibold text-gray-800 text-lg">2. How to Enter</h3>
+                          <p>2.1. Taple games are free to play and require no purchase to participate.</p>
+                          <p>2.2. Participants may access Taple games via the designated QR code or link provided by participating venues.</p>
+                          <p>2.3. Internet access is required to play.</p>
+                          <p>2.4. Free Entry Alternative: If any game is linked to a purchase (e.g., bonus spins for buying a drink), a completely free method of entry is always available. Patrons can obtain free entries by following the free entry steps published in Taple T&amp;Cs (e.g., emailing the venue or using a free in-app token). This ensures compliance with trade promotion laws in all Australian states.</p>
+                      </section>
 
-      <!-- Spin Wheel Terms Modal -->
-      <div id="spin-wheel-terms-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
-          <div class="bg-white rounded-2xl p-8 shadow-2xl text-left max-w-sm w-full relative">
-              <h2 class="text-2xl font-bold text-gray-800 mb-4">Spin To Win Terms</h2>
-              <div class="space-y-3 text-sm text-gray-600">
-                  <p><span class="font-semibold">Prizes:</span> As stated on the wheel segment you land on.</p>
-                  <p><span class="font-semibold">Limits:</span> Limited to one spin per person every 2 hours.</p>
-                  <p><span class="font-semibold">Redemption:</span> Prize must be redeemed on the same day. This offer cannot be exchanged for cash and is not valid with other promotions.</p>
-              </div>
-              <button id="close-spin-wheel-terms-button" class="mt-6 w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
-                  Close
-              </button>
-          </div>
-      </div>
+                      <section class="space-y-3">
+                          <h3 class="font-semibold text-gray-800 text-lg">3. Game Types</h3>
+                          <p>3.1. Taple may include skill-based games such as Trivia and “Stop the Clock”, and chance-based games such as “Spin the Wheel”.</p>
+                          <p>3.2. Winners are determined in accordance with the rules displayed within each game.</p>
+                          <p>3.3. For the “Spin the Wheel” game, a 2-hour cooldown period applies between spins for each user account to encourage fair use and responsible prize distribution.</p>
+                      </section>
 
-      <!-- Trivia Terms Modal -->
-      <div id="trivia-terms-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
-          <div class="bg-white rounded-2xl p-8 shadow-2xl text-left max-w-sm w-full relative">
-              <h2 class="text-2xl font-bold text-gray-800 mb-4">Trivia Terms</h2>
-              <div class="space-y-3 text-sm text-gray-600">
-                  <p>The weekly trivia is for entertainment purposes only.</p>
-                  <p>No prize is awarded for participation or for achieving a high score.</p>
-                  <p>Challenge your friends and have fun!</p>
+                      <section class="space-y-3">
+                          <h3 class="font-semibold text-gray-800 text-lg">4. Prizes</h3>
+                          <p>4.1. Prizes may include:</p>
+                          <ul class="list-disc list-inside space-y-1">
+                              <li>a) Free alcoholic or non-alcoholic drinks</li>
+                              <li>b) Free food items</li>
+                              <li>c) Discounts or offers (e.g., buy 1 get 1 free, % off)</li>
+                          </ul>
+                          <p>4.2. Alcoholic prizes can only be claimed by patrons aged 18 or over, and participating venues may require valid ID before serving alcohol.</p>
+                          <p>4.3. All alcoholic prizes must be redeemed and consumed in accordance with Responsible Service of Alcohol (RSA) laws. Venues may refuse to serve alcohol to any person in accordance with RSA obligations.</p>
+                          <p>4.4. Prizes are non-transferable, cannot be redeemed for cash or credit, and may not be exchanged unless stated otherwise.</p>
+                          <p>4.5. Prizes cannot be combined with any other offer, discount or promotion, unless expressly stated.</p>
+                      </section>
+
+                      <section class="space-y-3">
+                          <h3 class="font-semibold text-gray-800 text-lg">5. Prize Redemption</h3>
+                          <p>5.1. Prizes must be redeemed on the same day they are won, unless otherwise stated by the venue.</p>
+                          <p>5.2. A maximum of one (1) prize redemption per person per day applies.</p>
+                          <p>5.3. To redeem a prize, patrons must show proof of their win to a staff member at the venue before ordering.</p>
+                      </section>
+
+                      <section class="space-y-3">
+                          <h3 class="font-semibold text-gray-800 text-lg">6. Responsible Service of Alcohol</h3>
+                          <p>6.1. Alcoholic prizes are subject to RSA laws in all Australian states.</p>
+                          <p>6.2. Venues reserve the right to refuse service of alcoholic prizes where a patron is intoxicated, under 18, or otherwise prohibited from receiving alcohol.</p>
+                      </section>
+
+                      <section class="space-y-3">
+                          <h3 class="font-semibold text-gray-800 text-lg">7. Fair Play and System Integrity</h3>
+                          <p>7.1. Only natural persons may participate — bot, automated or fraudulent entries are prohibited.</p>
+                          <p>7.2. Taple and participating venues reserve the right to suspend or remove a player’s access if misuse, cheating, exploitation of system bugs, or manipulation is detected.</p>
+                          <p>7.3. Any attempt to undermine the legitimate operation of Taple games may result in player disqualification and possible banning from future participation.</p>
+                      </section>
+
+                      <section class="space-y-3">
+                          <h3 class="font-semibold text-gray-800 text-lg">8. Changes, Availability &amp; Liability</h3>
+                          <p>8.1. Taple and participating venues reserve the right to modify, suspend, or cancel any game or prize at any time, subject to applicable laws.</p>
+                          <p>8.2. Taple is not responsible for technical issues, device failure, connectivity problems, or venue decisions that affect play or prize redemption.</p>
+                          <p>8.3. To the extent permitted by law, Taple and participating venues are not liable for any loss, injury or damage arising from participation or prize redemption.</p>
+                      </section>
+
+                      <section class="space-y-3">
+                          <h3 class="font-semibold text-gray-800 text-lg">9. Privacy</h3>
+                          <p>9.1. Personal information collected through Taple is used solely for the administration of the promotion, user experience and prize fulfilment.</p>
+                          <p>9.2. Data will be handled in accordance with Taple’s Privacy Policy.</p>
+                      </section>
+
+                      <section class="space-y-3">
+                          <h3 class="font-semibold text-gray-800 text-lg">10. Governing Law</h3>
+                          <p>10.1. These T&amp;Cs are governed by the laws of Victoria, Australia.</p>
+                          <p>10.2. Any disputes will be subject to the exclusive jurisdiction of the courts of Victoria.</p>
+                      </section>
+                  </div>
+                  <button id="terms-dismiss-button" class="mt-6 w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
+                      Close
+                  </button>
               </div>
-              <button id="close-trivia-terms-button" class="mt-6 w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
-                  Close
-              </button>
           </div>
       </div>
 
