@@ -374,8 +374,16 @@ function resetStopClock() {
     stopClockResult.textContent = '';
     stopClockButton.textContent = 'Start';
     stopClockButton.disabled = false;
-    stopClockButton.classList.remove('bg-gray-500', 'hover:bg-gray-600', 'bg-red-500', 'hover:bg-red-600', 'bg-gray-400');
-    stopClockButton.classList.add('bg-red-500', 'hover:bg-red-600');
+    stopClockButton.classList.remove(
+        'bg-gray-500',
+        'hover:bg-gray-600',
+        'bg-red-500',
+        'hover:bg-red-600',
+        'bg-gray-400',
+        'bg-slate-900',
+        'hover:bg-slate-800'
+    );
+    stopClockButton.classList.add('bg-slate-900', 'hover:bg-slate-800');
     stopClockGameState = 'idle';
 }
 
