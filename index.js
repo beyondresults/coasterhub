@@ -144,7 +144,6 @@ const customMonthSelectOptions = document.getElementById('custom-month-select-op
 const showTermsButton = document.getElementById('show-terms-button');
 const termsModal = document.getElementById('terms-modal');
 const closeTermsButton = document.getElementById('close-terms-button');
-const termsDismissButton = document.getElementById('terms-dismiss-button');
 const birthdayClubDescription = document.getElementById('birthday-club-description');
 
 
@@ -1405,7 +1404,6 @@ async function init() {
             showSpinWheelTermsButton,
             showTriviaTermsButton
         ].filter(Boolean);
-        const termsClosers = [closeTermsButton, termsDismissButton].filter(Boolean);
 
         const openTermsModal = (event) => {
             if (event) {
@@ -1422,9 +1420,9 @@ async function init() {
             button.addEventListener('click', openTermsModal);
         });
 
-        termsClosers.forEach((button) => {
-            button.addEventListener('click', hideTermsModal);
-        });
+        if (closeTermsButton) {
+            closeTermsButton.addEventListener('click', hideTermsModal);
+        }
 
         termsModal.addEventListener('click', (event) => {
             if (event.target === termsModal) {
