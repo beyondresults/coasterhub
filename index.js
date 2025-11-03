@@ -78,7 +78,6 @@ const stopClockCancelRedemptionButton = document.getElementById('stop-clock-canc
 // Spin Wheel
 const spinButton = document.getElementById('spin-button');
 const wheel = document.getElementById('wheel');
-const wheelSegmentsContainer = document.getElementById('wheel-segments');
 const prizeModal = document.getElementById('prize-modal');
 const prizeWonText = document.getElementById('prize-won');
 const prizeExpiryEl = document.getElementById('prize-expiry');
@@ -395,35 +394,9 @@ function handleStopClockButtonClick() {
 }
 
 // --- SVG & WHEEL HELPERS ---
-function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
-    const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
-    return {
-        x: centerX + (radius * Math.cos(angleInRadians)),
-        y: centerY + (radius * Math.sin(angleInRadians))
-    };
-}
-
-function describeArc(x, y, radius, startAngle, endAngle) {
-    const start = polarToCartesian(x, y, radius, endAngle);
-    const end = polarToCartesian(x, y, radius, startAngle);
-    const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-    const d = [
-        "M", start.x, start.y,
-        "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y,
-        "L", x, y,
-        "L", start.x, start.y,
-        "Z"
-    ].join(" ");
-    return d;
-}
-
 function generateWheelSegments() {
     const prizes = Array.isArray(VENUE_DATA?.spinWheel?.prizes) ? VENUE_DATA.spinWheel.prizes : [];
-    const colors = ["#ef4444", "#f97316", "#3b82f6", "#8b5cf6", "#10b981", "#ec4899"];
-    let currentAngle = 0;
-    
-    wheelSegmentsData = []; // Reset segment data
-    wheelSegmentsContainer.innerHTML = ''; // Clear existing segments
+    wheelSegmentsData = [];
 
     if (!prizes.length) {
         return;
@@ -435,6 +408,8 @@ function generateWheelSegments() {
     }, 0);
     const useEvenSplit = oddsTotal <= 0;
 
+    let currentAngle = 0;
+
     prizes.forEach((prize, index) => {
         const numericOdds = Number(prize.odds);
         const normalizedOdds = useEvenSplit
@@ -442,17 +417,12 @@ function generateWheelSegments() {
             : (Number.isFinite(numericOdds) ? numericOdds / oddsTotal : 0);
         const angle = normalizedOdds * 360;
         const maxAngle = index === prizes.length - 1 ? 360 : currentAngle + angle;
-        const segmentData = {
-            prize: prize,
-            minAngle: currentAngle,
-            maxAngle: maxAngle
-        };
-        wheelSegmentsData.push(segmentData);
 
-        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        path.setAttribute("d", describeArc(100, 100, 100, currentAngle, maxAngle));
-        path.setAttribute("fill", colors[index % colors.length]);
-        wheelSegmentsContainer.appendChild(path);
+        wheelSegmentsData.push({
+            prize,
+            minAngle: currentAngle,
+            maxAngle
+        });
 
         currentAngle = maxAngle;
     });
@@ -1457,4 +1427,3 @@ async function init() {
 
 // --- APP START ---
 document.addEventListener('DOMContentLoaded', init);
-
