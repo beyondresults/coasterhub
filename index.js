@@ -54,6 +54,10 @@ const openInstagramLink = document.getElementById('open-instagram-link');
 const googleReviewLink = document.getElementById('google-review-link');
 const mainContent = document.querySelector('main');
 const layoutContainer = document.querySelector('.container');
+const loadingOverlay = document.getElementById('loading-overlay');
+const APP_LOAD_MIN_DURATION = 1500;
+const loadingOverlayStartedAt = Date.now();
+let loadingOverlayHideTimeout = null;
 
 // Stop The Clock Game
 const stopClockTimer = document.getElementById('stop-clock-timer');
@@ -228,6 +232,29 @@ function renderStopClockTime(value) {
         .split('')
         .map(char => `<span data-char="${char}">${char}</span>`)
         .join('');
+}
+
+function hideLoadingOverlay(options = {}) {
+    if (!loadingOverlay) {
+        return;
+    }
+
+    const { force = false } = options;
+    const elapsed = Date.now() - loadingOverlayStartedAt;
+    const delay = force ? 0 : Math.max(0, APP_LOAD_MIN_DURATION - elapsed);
+
+    if (loadingOverlayHideTimeout !== null) {
+        clearTimeout(loadingOverlayHideTimeout);
+    }
+
+    loadingOverlayHideTimeout = window.setTimeout(() => {
+        loadingOverlay.classList.add('loading-overlay--hidden');
+        window.setTimeout(() => {
+            if (loadingOverlay && loadingOverlay.parentNode) {
+                loadingOverlay.parentNode.removeChild(loadingOverlay);
+            }
+        }, 450);
+    }, delay);
 }
 
 // --- STOP THE CLOCK FUNCTIONS ---
@@ -1280,6 +1307,7 @@ async function init() {
         const selectedVenue = venues[venueId];
 
         if (!selectedVenue) {
+            hideLoadingOverlay({ force: true });
             renderVenueNotFound(requestedVenueId, Object.keys(venues));
             return;
         }
@@ -1288,6 +1316,7 @@ async function init() {
         GLOBAL_DATA = globalData;
     } catch (error) {
         console.error('Error loading configuration data', error);
+        hideLoadingOverlay({ force: true });
         renderDataLoadError();
         return;
     }
@@ -1452,6 +1481,8 @@ async function init() {
     if (activePrize) {
         startCooldownTimer(activePrize.expiry);
     }
+
+    hideLoadingOverlay();
 }
 
 // --- APP START ---
