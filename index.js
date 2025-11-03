@@ -228,6 +228,14 @@ function formatTime(ms) {
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
+function renderStopClockTime(value) {
+    const stringValue = typeof value === 'string' ? value : String(value);
+    stopClockTimer.innerHTML = stringValue
+        .split('')
+        .map(char => `<span data-char="${char}">${char}</span>`)
+        .join('');
+}
+
 // --- STOP THE CLOCK FUNCTIONS ---
 function getActiveStopClockPrize() {
     const prizeData = localStorage.getItem(stopClockStorageKey);
@@ -324,7 +332,7 @@ function handleStopClockConfirmRedemption() {
 
 function updateStopClockTimer() {
     const elapsedTime = Date.now() - stopClockStartTime;
-    stopClockTimer.textContent = (elapsedTime / 1000).toFixed(2);
+    renderStopClockTime((elapsedTime / 1000).toFixed(2));
 }
 
 function startStopClock() {
@@ -367,7 +375,7 @@ function stopStopClock() {
 }
 
 function resetStopClock() {
-    stopClockTimer.textContent = '0.00';
+    renderStopClockTime('0.00');
     stopClockResult.textContent = '';
     stopClockButton.textContent = 'Start';
     stopClockButton.disabled = false;
@@ -1283,6 +1291,7 @@ async function init() {
     }
 
     clearNotice();
+    renderStopClockTime(stopClockTimer.textContent || '0.00');
 
     const { pubDetails } = VENUE_DATA;
     pubLogo.src = pubDetails.logo;
