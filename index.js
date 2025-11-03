@@ -60,8 +60,6 @@ const stopClockTimer = document.getElementById('stop-clock-timer');
 const stopClockResult = document.getElementById('stop-clock-result');
 const stopClockButton = document.getElementById('stop-clock-button');
 const showStopClockTermsButton = document.getElementById('show-stop-clock-terms-button');
-const stopClockTermsModal = document.getElementById('stop-clock-terms-modal');
-const closeStopClockTermsButton = document.getElementById('close-stop-clock-terms-button');
 
 // Stop The Clock Prize Modal
 const stopClockPrizeModal = document.getElementById('stop-clock-prize-modal');
@@ -82,8 +80,6 @@ const prizeModal = document.getElementById('prize-modal');
 const prizeWonText = document.getElementById('prize-won');
 const prizeExpiryEl = document.getElementById('prize-expiry');
 const showSpinWheelTermsButton = document.getElementById('show-spin-wheel-terms-button');
-const spinWheelTermsModal = document.getElementById('spin-wheel-terms-modal');
-const closeSpinWheelTermsButton = document.getElementById('close-spin-wheel-terms-button');
 
 // Prize Modal Views
 const prizeInitialView = document.getElementById('prize-initial-view');
@@ -109,8 +105,6 @@ const finalScore = document.getElementById('final-score');
 const totalQuestions = document.getElementById('total-questions');
 const scorePercentage = document.getElementById('score-percentage');
 const showTriviaTermsButton = document.getElementById('show-trivia-terms-button');
-const triviaTermsModal = document.getElementById('trivia-terms-modal');
-const closeTriviaTermsButton = document.getElementById('close-trivia-terms-button');
 const triviaTimer = document.getElementById('trivia-timer');
 const finalTimeDisplay = document.getElementById('final-time-display');
 const triviaPlayerNameInput = document.getElementById('trivia-player-name');
@@ -150,6 +144,7 @@ const customMonthSelectOptions = document.getElementById('custom-month-select-op
 const showTermsButton = document.getElementById('show-terms-button');
 const termsModal = document.getElementById('terms-modal');
 const closeTermsButton = document.getElementById('close-terms-button');
+const termsDismissButton = document.getElementById('terms-dismiss-button');
 const birthdayClubDescription = document.getElementById('birthday-club-description');
 
 
@@ -1395,21 +1390,40 @@ async function init() {
         });
     }
 
-    showTermsButton.addEventListener('click', () => termsModal.classList.remove('hidden'));
-    closeTermsButton.addEventListener('click', () => termsModal.classList.add('hidden'));
-    termsModal.addEventListener('click', (e) => { if (e.target === termsModal) termsModal.classList.add('hidden'); });
+    if (termsModal) {
+        const termsTriggers = [
+            showTermsButton,
+            showStopClockTermsButton,
+            showSpinWheelTermsButton,
+            showTriviaTermsButton
+        ].filter(Boolean);
+        const termsClosers = [closeTermsButton, termsDismissButton].filter(Boolean);
 
-    showStopClockTermsButton.addEventListener('click', () => stopClockTermsModal.classList.remove('hidden'));
-    closeStopClockTermsButton.addEventListener('click', () => stopClockTermsModal.classList.add('hidden'));
-    stopClockTermsModal.addEventListener('click', (e) => { if (e.target === stopClockTermsModal) stopClockTermsModal.classList.add('hidden'); });
+        const openTermsModal = (event) => {
+            if (event) {
+                event.preventDefault();
+            }
+            termsModal.classList.remove('hidden');
+        };
 
-    showSpinWheelTermsButton.addEventListener('click', () => spinWheelTermsModal.classList.remove('hidden'));
-    closeSpinWheelTermsButton.addEventListener('click', () => spinWheelTermsModal.classList.add('hidden'));
-    spinWheelTermsModal.addEventListener('click', (e) => { if (e.target === spinWheelTermsModal) spinWheelTermsModal.classList.add('hidden'); });
+        const hideTermsModal = () => {
+            termsModal.classList.add('hidden');
+        };
 
-    showTriviaTermsButton.addEventListener('click', () => triviaTermsModal.classList.remove('hidden'));
-    closeTriviaTermsButton.addEventListener('click', () => triviaTermsModal.classList.add('hidden'));
-    triviaTermsModal.addEventListener('click', (e) => { if (e.target === triviaTermsModal) triviaTermsModal.classList.add('hidden'); });
+        termsTriggers.forEach((button) => {
+            button.addEventListener('click', openTermsModal);
+        });
+
+        termsClosers.forEach((button) => {
+            button.addEventListener('click', hideTermsModal);
+        });
+
+        termsModal.addEventListener('click', (event) => {
+            if (event.target === termsModal) {
+                hideTermsModal();
+            }
+        });
+    }
 
     stopClockButton.addEventListener('click', handleStopClockButtonClick);
     stopClockRedeemLaterButton.addEventListener('click', handleStopClockRedeemLater);
