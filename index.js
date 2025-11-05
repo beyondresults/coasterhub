@@ -36,6 +36,7 @@ let triviaStartTime = 0;
 let triviaDurationMs = 0;
 let triviaScoreSubmitted = false;
 let lastSubmittedPlayerName = '';
+let venueApprovalCode = '';
 
 
 // --- DOM ELEMENTS ---
@@ -76,6 +77,9 @@ const stopClockRedeemNowButton = document.getElementById('stop-clock-redeem-now-
 const stopClockRedeemLaterButton = document.getElementById('stop-clock-redeem-later-button');
 const stopClockConfirmRedemptionButton = document.getElementById('stop-clock-confirm-redemption-button');
 const stopClockCancelRedemptionButton = document.getElementById('stop-clock-cancel-redemption-button');
+const stopClockApprovalCodeField = document.getElementById('stop-clock-approval-code-field');
+const stopClockApprovalCodeInput = document.getElementById('stop-clock-approval-code-input');
+const stopClockApprovalCodeError = document.getElementById('stop-clock-approval-code-error');
 
 // Spin Wheel
 const spinButton = document.getElementById('spin-button');
@@ -95,6 +99,9 @@ const redeemNowButton = document.getElementById('redeem-now-button');
 const redeemLaterButton = document.getElementById('redeem-later-button');
 const confirmRedemptionButton = document.getElementById('confirm-redemption-button');
 const cancelRedemptionButton = document.getElementById('cancel-redemption-button');
+const prizeApprovalCodeField = document.getElementById('prize-approval-code-field');
+const prizeApprovalCodeInput = document.getElementById('prize-approval-code-input');
+const prizeApprovalCodeError = document.getElementById('prize-approval-code-error');
 
 // Trivia Game
 const triviaStartScreen = document.getElementById('trivia-start-screen');
@@ -288,6 +295,7 @@ function showStopClockPrizeModal() {
 }
 
 function hideStopClockPrizeModal() {
+    resetStopClockApprovalCodeState();
     stopClockPrizeModal.classList.add('hidden');
 }
 
@@ -330,14 +338,35 @@ function handleStopClockRedeemLater() {
 function handleStopClockRedeemNow() {
     stopClockPrizeInitialView.classList.add('hidden');
     stopClockPrizeConfirmationView.classList.remove('hidden');
+    if (requiresApprovalCode()) {
+        resetStopClockApprovalCodeState();
+        if (stopClockApprovalCodeInput) {
+            stopClockApprovalCodeInput.focus({ preventScroll: true });
+        }
+    } else if (stopClockConfirmRedemptionButton) {
+        stopClockConfirmRedemptionButton.disabled = false;
+    }
 }
 
 function handleStopClockCancelRedemption() {
     stopClockPrizeConfirmationView.classList.add('hidden');
     stopClockPrizeInitialView.classList.remove('hidden');
+    resetStopClockApprovalCodeState();
 }
 
 function handleStopClockConfirmRedemption() {
+    if (requiresApprovalCode()) {
+        const submittedCode = normalizeApprovalCode(stopClockApprovalCodeInput?.value);
+        if (submittedCode !== venueApprovalCode) {
+            if (stopClockApprovalCodeError) {
+                stopClockApprovalCodeError.textContent = 'Enter the code provided by staff.';
+            }
+            if (stopClockConfirmRedemptionButton) {
+                stopClockConfirmRedemptionButton.disabled = true;
+            }
+            return;
+        }
+    }
     let prize = getActiveStopClockPrize();
     if (prize) {
         prize.redeemed = true;
@@ -571,7 +600,78 @@ function showPrizeModal() {
 }
 
 function hidePrizeModal() {
+    resetSpinApprovalCodeState();
     prizeModal.classList.add('hidden');
+}
+
+function normalizeApprovalCode(value) {
+    return (value || '').trim().toUpperCase();
+}
+
+function requiresApprovalCode() {
+    return Boolean(venueApprovalCode);
+}
+
+function resetSpinApprovalCodeState() {
+    if (!requiresApprovalCode()) {
+        return;
+    }
+    if (prizeApprovalCodeInput) {
+        prizeApprovalCodeInput.value = '';
+    }
+    if (prizeApprovalCodeError) {
+        prizeApprovalCodeError.textContent = '';
+    }
+    if (confirmRedemptionButton) {
+        confirmRedemptionButton.disabled = true;
+    }
+}
+
+function resetStopClockApprovalCodeState() {
+    if (!requiresApprovalCode()) {
+        return;
+    }
+    if (stopClockApprovalCodeInput) {
+        stopClockApprovalCodeInput.value = '';
+    }
+    if (stopClockApprovalCodeError) {
+        stopClockApprovalCodeError.textContent = '';
+    }
+    if (stopClockConfirmRedemptionButton) {
+        stopClockConfirmRedemptionButton.disabled = true;
+    }
+}
+
+function validateApprovalCodeInput(inputEl, errorEl, confirmButton) {
+    if (!requiresApprovalCode()) {
+        return;
+    }
+    const normalizedValue = normalizeApprovalCode(inputEl?.value);
+    if (!normalizedValue) {
+        if (confirmButton) {
+            confirmButton.disabled = true;
+        }
+        if (errorEl) {
+            errorEl.textContent = '';
+        }
+        return;
+    }
+
+    if (normalizedValue === venueApprovalCode) {
+        if (confirmButton) {
+            confirmButton.disabled = false;
+        }
+        if (errorEl) {
+            errorEl.textContent = '';
+        }
+    } else {
+        if (confirmButton) {
+            confirmButton.disabled = true;
+        }
+        if (errorEl) {
+            errorEl.textContent = 'Ask staff for today\u2019s code.';
+        }
+    }
 }
 
 function handleRedeemLater() {
@@ -587,14 +687,35 @@ function handleRedeemLater() {
 function handleRedeemNow() {
     prizeInitialView.classList.add('hidden');
     prizeConfirmationView.classList.remove('hidden');
+    if (requiresApprovalCode()) {
+        resetSpinApprovalCodeState();
+        if (prizeApprovalCodeInput) {
+            prizeApprovalCodeInput.focus({ preventScroll: true });
+        }
+    } else if (confirmRedemptionButton) {
+        confirmRedemptionButton.disabled = false;
+    }
 }
 
 function handleCancelRedemption() {
     prizeConfirmationView.classList.add('hidden');
     prizeInitialView.classList.remove('hidden');
+    resetSpinApprovalCodeState();
 }
 
 function handleConfirmRedemption() {
+    if (requiresApprovalCode()) {
+        const submittedCode = normalizeApprovalCode(prizeApprovalCodeInput?.value);
+        if (submittedCode !== venueApprovalCode) {
+            if (prizeApprovalCodeError) {
+                prizeApprovalCodeError.textContent = 'Enter the code provided by staff.';
+            }
+            if (confirmRedemptionButton) {
+                confirmRedemptionButton.disabled = true;
+            }
+            return;
+        }
+    }
     let prize = getActivePrize();
     if (prize) {
         prize.redeemed = true;
@@ -1314,6 +1435,7 @@ async function init() {
 
         VENUE_DATA = selectedVenue;
         GLOBAL_DATA = globalData;
+        venueApprovalCode = normalizeApprovalCode(selectedVenue.prizeApprovalCode);
     } catch (error) {
         console.error('Error loading configuration data', error);
         hideLoadingOverlay({ force: true });
@@ -1323,6 +1445,31 @@ async function init() {
 
     clearNotice();
     renderStopClockTime(stopClockTimer.textContent || '0.00');
+
+    const approvalCodeRequired = requiresApprovalCode();
+    if (!approvalCodeRequired) {
+        if (prizeApprovalCodeField) {
+            prizeApprovalCodeField.classList.add('hidden');
+        }
+        if (stopClockApprovalCodeField) {
+            stopClockApprovalCodeField.classList.add('hidden');
+        }
+        if (confirmRedemptionButton) {
+            confirmRedemptionButton.disabled = false;
+        }
+        if (stopClockConfirmRedemptionButton) {
+            stopClockConfirmRedemptionButton.disabled = false;
+        }
+    } else {
+        if (prizeApprovalCodeField) {
+            prizeApprovalCodeField.classList.remove('hidden');
+        }
+        if (stopClockApprovalCodeField) {
+            stopClockApprovalCodeField.classList.remove('hidden');
+        }
+        resetSpinApprovalCodeState();
+        resetStopClockApprovalCodeState();
+    }
 
     const { pubDetails } = VENUE_DATA;
     pubLogo.src = pubDetails.logo;
@@ -1373,6 +1520,18 @@ async function init() {
 
     reviewEmojiButtons.forEach(button => button.addEventListener('click', handleReviewEmojiClick));
     reviewFeedbackForm.addEventListener('submit', handleFeedbackSubmit);
+
+    if (prizeApprovalCodeInput) {
+        prizeApprovalCodeInput.addEventListener('input', () =>
+            validateApprovalCodeInput(prizeApprovalCodeInput, prizeApprovalCodeError, confirmRedemptionButton)
+        );
+    }
+
+    if (stopClockApprovalCodeInput) {
+        stopClockApprovalCodeInput.addEventListener('input', () =>
+            validateApprovalCodeInput(stopClockApprovalCodeInput, stopClockApprovalCodeError, stopClockConfirmRedemptionButton)
+        );
+    }
 
     if (localStorage.getItem('birthdayClubSignedUp') === 'true' && !localStorage.getItem(birthdaySignupStorageKey)) {
         localStorage.setItem(birthdaySignupStorageKey, 'true');
