@@ -488,8 +488,20 @@
               <div id="prize-confirmation-view" class="hidden">
                   <h2 class="text-2xl font-bold text-gray-800 mb-4">Have you showed your screen to a staff member?</h2>
                   <p class="text-gray-600 mb-6">Show your phone screen to a staff member to redeem. This prize can only be redeemed once.</p>
+                  <div id="prize-approval-code-field" class="text-left mb-4 space-y-2">
+                      <label for="prize-approval-code-input" class="text-sm font-semibold text-gray-700">Staff approval code</label>
+                      <input
+                        id="prize-approval-code-input"
+                        type="text"
+                        inputmode="text"
+                        autocomplete="off"
+                        class="w-full rounded-xl border border-gray-300 px-4 py-3 text-base focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-200"
+                        placeholder="Enter code from staff"
+                      />
+                      <p id="prize-approval-code-error" class="text-sm text-red-600 h-5" aria-live="polite"></p>
+                  </div>
                   <div class="space-y-3">
-                      <button id="confirm-redemption-button" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-green-700 transition-colors">
+                      <button id="confirm-redemption-button" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-green-700 transition-colors disabled:bg-green-200 disabled:text-white disabled:shadow-none" disabled>
                           Yes, redeem now
                       </button>
                       <button id="cancel-redemption-button" class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
@@ -537,8 +549,20 @@
               <div id="stop-clock-prize-confirmation-view" class="hidden">
                   <h2 class="text-2xl font-bold text-gray-800 mb-4">Confirm Redemption</h2>
                   <p class="text-gray-600 mb-6">Have you shown this screen to a staff member? This prize can only be redeemed once.</p>
+                  <div id="stop-clock-approval-code-field" class="text-left mb-4 space-y-2">
+                      <label for="stop-clock-approval-code-input" class="text-sm font-semibold text-gray-700">Staff approval code</label>
+                      <input
+                        id="stop-clock-approval-code-input"
+                        type="text"
+                        inputmode="text"
+                        autocomplete="off"
+                        class="w-full rounded-xl border border-gray-300 px-4 py-3 text-base focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-200"
+                        placeholder="Enter code from staff"
+                      />
+                      <p id="stop-clock-approval-code-error" class="text-sm text-red-600 h-5" aria-live="polite"></p>
+                  </div>
                   <div class="space-y-3">
-                      <button id="stop-clock-confirm-redemption-button" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-green-700 transition-colors">
+                      <button id="stop-clock-confirm-redemption-button" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-green-700 transition-colors disabled:bg-green-200 disabled:text-white disabled:shadow-none" disabled>
                           Yes, redeem now
                       </button>
                       <button id="stop-clock-cancel-redemption-button" class="w-full bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors">
