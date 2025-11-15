@@ -84,6 +84,7 @@ const stopClockApprovalCodeError = document.getElementById('stop-clock-approval-
 // Spin Wheel
 const spinButton = document.getElementById('spin-button');
 const wheel = document.getElementById('wheel');
+const wheelContainer = document.getElementById('wheel-container');
 const prizeModal = document.getElementById('prize-modal');
 const prizeWonText = document.getElementById('prize-won');
 const prizeExpiryEl = document.getElementById('prize-expiry');
@@ -602,6 +603,29 @@ function showPrizeModal() {
 function hidePrizeModal() {
     resetSpinApprovalCodeState();
     prizeModal.classList.add('hidden');
+}
+
+function triggerWheelActivation() {
+    if (!spinButton || spinButton.disabled) {
+        return;
+    }
+    spinButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+}
+
+function handleWheelPointerDown(event) {
+    if (event) {
+        event.preventDefault();
+    }
+    triggerWheelActivation();
+}
+
+function handleWheelKeyDown(event) {
+    if (!event) return;
+    const key = event.key;
+    if (key === 'Enter' || key === ' ') {
+        event.preventDefault();
+        triggerWheelActivation();
+    }
 }
 
 function normalizeApprovalCode(value) {
@@ -1635,6 +1659,10 @@ async function init() {
     redeemNowButton.addEventListener('click', handleRedeemNow);
     cancelRedemptionButton.addEventListener('click', handleCancelRedemption);
     confirmRedemptionButton.addEventListener('click', handleConfirmRedemption);
+    if (wheelContainer) {
+        wheelContainer.addEventListener('pointerdown', handleWheelPointerDown);
+        wheelContainer.addEventListener('keydown', handleWheelKeyDown);
+    }
 
     const activePrize = getActivePrize();
     if (activePrize) {
